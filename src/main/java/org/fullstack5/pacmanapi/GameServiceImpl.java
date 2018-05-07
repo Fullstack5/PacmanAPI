@@ -32,21 +32,19 @@ public class GameServiceImpl implements GameService {
         } while (games.containsKey(gameId));
 
         final Maze maze = MazeLoader.loadMaze(1);
-        Game game = new Game(maze);
-        game.setTime(0);
-        game.setPacman(new Piece(new Position(0, 0), Direction.NORTH));
+        Position pacmanPosition = new Position(0, 0);
+        Position ghostPosition = new Position(10, 10);
+        Game game = new Game(maze, pacmanPosition, ghostPosition, ghostPosition, ghostPosition, ghostPosition);
 
-        // runner needs to be final for the Flux's lambda
-        final GameRunner runner = new GameRunner(game);
-        games.put(gameId, runner);
+        games.put(gameId, new GameRunner(game));
 
         return new GameRegistered(gameId);
     }
 
     @Override
-    public void performMove(String gameId, Direction direction) {
+    public void performMove(String gameId, Direction direction, Piece.Type type) {
         GameRunner runner = games.get(gameId);
-        runner.setMove(direction);
+        runner.setDirection(direction, type);
     }
 
 

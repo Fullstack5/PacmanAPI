@@ -29,24 +29,50 @@ public class GameRunner {
     }
 
     public GameState step() {
-
         // update time
         long time = game.getTime();
-        time = time + 1;
-        game.setTime(time);
+        game.setTime(time + 1);
 
-        // update pacman
-        Piece pacman = game.getPacman();
-        pacman.setPosition(newPosition(pacman.getPosition(), pacman.getDirection()));
 
+        // update all pieces
+        game.getPieces().stream()
+                .forEach(piece ->
+                        piece.setPosition(newPosition(piece.getPosition(), piece.getDirection()))
+                );
+
+        return getState();
+    }
+
+    public GameState getState() {
         return new GameState(
-                time,
-                pacman.getPosition()
+                game.getTime(),
+                game.getPacman().getPosition(),
+                game.getBlinky().getPosition(),
+                game.getPinky().getPosition(),
+                game.getInky().getPosition(),
+                game.getClyde().getPosition()
         );
     }
 
-    public void setMove(Direction direction) {
-        this.game.getPacman().setDirection(direction);
+    public void setDirection(Direction direction, Piece.Type type) {
+        getPiece(type).setDirection(direction);
+    }
+
+    private Piece getPiece(Piece.Type type) {
+        switch (type) {
+            case PACMAN:
+                return game.getPacman();
+            case BLINKY:
+                return game.getBlinky();
+            case PINKY:
+                return game.getPinky();
+            case INKY:
+                return game.getInky();
+            case CLYDE:
+                return game.getClyde();
+            default:
+                throw new RuntimeException("getPiece called with a type that does not exist: " + type);
+        }
     }
 
     public Position newPosition(Position position, Direction direction) {
