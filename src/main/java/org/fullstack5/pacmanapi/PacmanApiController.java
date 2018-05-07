@@ -27,4 +27,10 @@ public class PacmanApiController {
     public GameRegistered registerGame() {
         return service.register();
     }
+
+    @PostMapping(path = "/perform-move")
+    public void performMove(
+            @RequestBody MoveRequest request) {
+        service.performMove(request.getGameId(), request.getDirection());
+    }
 }

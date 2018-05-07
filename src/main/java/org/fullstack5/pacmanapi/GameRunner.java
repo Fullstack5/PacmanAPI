@@ -1,13 +1,32 @@
 package org.fullstack5.pacmanapi;
 
-import lombok.AllArgsConstructor;
 import org.fullstack5.pacmanapi.models.*;
 import org.fullstack5.pacmanapi.models.response.GameState;
+import reactor.core.publisher.ConnectableFlux;
+import reactor.core.publisher.Flux;
 
-@AllArgsConstructor
+import java.time.Duration;
+
+/**
+ * A runner to execute the game rules and logic
+ */
 public class GameRunner {
 
     final Game game;
+    final ConnectableFlux<GameState> flux;
+
+    public GameRunner(Game game) {
+        this.game = game;
+        this.flux = Flux
+                .interval(Duration.ofSeconds(1))
+                .map(t -> this.step())
+                .publish();
+        flux.connect();
+    }
+
+    public ConnectableFlux<GameState> getFlux() {
+        return this.flux;
+    }
 
     public GameState step() {
 
@@ -24,6 +43,10 @@ public class GameRunner {
                 time,
                 pacman.getPosition()
         );
+    }
+
+    public void setMove(Direction direction) {
+        this.game.getPacman().setDirection(direction);
     }
 
     public Position newPosition(Position position, Direction direction) {

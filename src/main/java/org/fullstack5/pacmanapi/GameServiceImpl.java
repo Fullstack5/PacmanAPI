@@ -4,25 +4,23 @@ import org.fullstack5.pacmanapi.models.*;
 import org.fullstack5.pacmanapi.models.response.GameRegistered;
 import org.fullstack5.pacmanapi.models.response.GameState;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class GameServiceImpl implements GameService {
 
-    private Map<String, ConnectableFlux<GameState>> fluxes;
+    private Map<String, GameRunner> games;
 
     public GameServiceImpl() {
-        fluxes = new HashMap();
+        games = new HashMap();
     }
 
     @Override
     public Flux<GameState> getState(String gameId) {
-        return fluxes.get(gameId);
+        return games.get(gameId).getFlux();
     }
 
     @Override
@@ -31,7 +29,7 @@ public class GameServiceImpl implements GameService {
         String gameId;
         do {
             gameId = PinCode.create();
-        } while (fluxes.containsKey(gameId));
+        } while (games.containsKey(gameId));
 
         final Maze maze = MazeLoader.loadMaze(1);
         Game game = new Game(maze);
@@ -40,15 +38,15 @@ public class GameServiceImpl implements GameService {
 
         // runner needs to be final for the Flux's lambda
         final GameRunner runner = new GameRunner(game);
-
-        ConnectableFlux<GameState> flux = Flux
-                .interval(Duration.ofSeconds(1))
-                .map(t -> runner.step())
-                .publish();
-        fluxes.put(gameId, flux);
-        flux.connect();
+        games.put(gameId, runner);
 
         return new GameRegistered(gameId);
+    }
+
+    @Override
+    public void performMove(String gameId, Direction direction) {
+        GameRunner runner = games.get(gameId);
+        runner.setMove(direction);
     }
 
 
