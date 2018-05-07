@@ -1,6 +1,7 @@
 package org.fullstack5.pacmanapi;
 
-import org.fullstack5.pacmanapi.models.request.CurrentStateRequest;
+import org.fullstack5.pacmanapi.models.request.MoveRequest;
+import org.fullstack5.pacmanapi.models.request.StateRequest;
 import org.fullstack5.pacmanapi.models.response.GameRegistered;
 import org.fullstack5.pacmanapi.models.response.GameState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class PacmanApiController {
 
     @PostMapping(path = "/current-state", produces = "application/stream+json")
     public Flux<GameState> getCurrentState(
-            @RequestBody CurrentStateRequest request) {
+            @RequestBody StateRequest request) {
         return service.getState(request.getGameId());
     }
 

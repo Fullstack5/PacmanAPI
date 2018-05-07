@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class CurrentStateRequest {
+public class StateRequest {
     private String gameId;
 }
