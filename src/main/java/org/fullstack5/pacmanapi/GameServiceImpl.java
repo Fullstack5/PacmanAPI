@@ -38,10 +38,9 @@ public class GameServiceImpl implements GameService {
         // and make this pinCode the final gameId for use in the Flux lambda
         final String gameId = pinCode;
 
-        Maze maze = new Maze(20, 20);
+        final Maze maze = MazeLoader.loadMaze(1);
         Game game = new Game(maze);
         game.setTime(0);
-        final Maze maze = MazeLoader.loadMaze(1);
         game.setPacman(new Piece(new Position(0, 0), Direction.NORTH));
         games.put(gameId, game);
 
