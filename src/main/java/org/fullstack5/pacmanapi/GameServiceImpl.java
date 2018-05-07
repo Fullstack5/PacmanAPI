@@ -26,7 +26,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public String start() {
+    public String register() {
         // generate a new pinCode for the new game
         String newPinCode;
         do {

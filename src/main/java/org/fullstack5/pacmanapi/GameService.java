@@ -5,5 +5,5 @@ import reactor.core.publisher.Flux;
 
 public interface GameService {
     Flux<GameState> get(String pinCode);
-    String start();
+    String register();
 }

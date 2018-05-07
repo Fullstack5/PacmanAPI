@@ -19,8 +19,8 @@ public class PacmanApiController {
         return service.get(pinCode);
     }
 
-    @GetMapping(path = "/startGame")
-    public String startGame() {
-        return service.start();
+    @GetMapping(path = "/register-game")
+    public String registerGame() {
+        return service.register();
     }
 }
