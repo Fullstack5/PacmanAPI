@@ -38,6 +38,10 @@ public class GameServiceImpl implements GameService {
 
         Game game = new Game();
         game.setTime(0);
+        Maze maze = new Maze();
+        maze.setHeight(20);
+        maze.setWidth(20);
+        game.setMaze(maze);
         game.setPacman(new Piece(new Position(0, 0), Direction.NORTH));
         games.put(pinCode, game);
 
@@ -61,7 +65,7 @@ public class GameServiceImpl implements GameService {
 
         // update pacman
         Piece pacman = game.getPacman();
-        pacman.setPosition(newPosition(pacman.getPosition(), pacman.getDirection()));
+        pacman.setPosition(game.newPosition(pacman.getPosition(), pacman.getDirection()));
 
         return new GameState(
                 time,
@@ -69,25 +73,4 @@ public class GameServiceImpl implements GameService {
         );
     }
 
-    public Position newPosition(Position position, Direction direction) {
-        if (position == null) {
-            return null;
-        }
-        if (direction == null) {
-            return position;
-        }
-
-        switch (direction) {
-            case NORTH:
-                return new Position(position.getX() + 1, position.getY());
-            case SOUTH:
-                return new Position(position.getX() - 1, position.getY());
-            case EAST:
-                return new Position(position.getX(), position.getY() + 1);
-            case WEST:
-                return new Position(position.getX(), position.getY() - 1);
-            default:
-                return position;
-        }
-    }
 }
