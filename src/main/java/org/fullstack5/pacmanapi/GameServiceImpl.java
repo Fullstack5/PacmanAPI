@@ -41,6 +41,7 @@ public class GameServiceImpl implements GameService {
         Maze maze = new Maze(20, 20);
         Game game = new Game(maze);
         game.setTime(0);
+        final Maze maze = MazeLoader.loadMaze(1);
         game.setPacman(new Piece(new Position(0, 0), Direction.NORTH));
         games.put(gameId, game);
 
