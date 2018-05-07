@@ -27,9 +27,14 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public String start() {
-        String pinCode = PinCode.create();
+        // generate a new pinCode for the new game
+        String newPinCode;
+        do {
+            newPinCode = PinCode.create();
+        } while (games.containsKey(newPinCode));
 
-
+        // and make this pinCode final to use in the Flux lambda
+        final String pinCode = newPinCode;
 
         Game game = new Game();
         game.setTime(0);
