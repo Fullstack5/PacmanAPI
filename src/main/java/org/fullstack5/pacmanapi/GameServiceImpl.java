@@ -33,7 +33,7 @@ public class GameServiceImpl implements GameService {
             gameId = PinCode.create();
         } while (fluxes.containsKey(gameId));
 
-        Maze maze = new Maze(20, 20);
+        final Maze maze = MazeLoader.loadMaze(1);
         Game game = new Game(maze);
         game.setTime(0);
         game.setPacman(new Piece(new Position(0, 0), Direction.NORTH));
