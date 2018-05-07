@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class GameState {
+public class Position {
     // this class is meant to be immutable
-    private long time;
-    private Position pacman;
+    private int x;
+    private int y;
 }
