@@ -1,22 +1,23 @@
 package org.fullstack5.pacmanapi.models;
 
+import org.fullstack5.pacmanapi.GameRunner;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class GameTest {
+public class GameRunnerTest {
 
-    public Game gameWithEmptyMaze(int height, int width) {
+    public GameRunner gameWithEmptyMaze(int height, int width) {
         Maze maze = new Maze(height, width);
         Game game = new Game(maze);
-        return game;
+        return new GameRunner(game);
     }
 
     @Test
     public void newPositionNorth() {
-        Game game = gameWithEmptyMaze(20, 20);
+        GameRunner runner = gameWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
-        Position newPosition = game.newPosition(position, Direction.NORTH);
+        Position newPosition = runner.newPosition(position, Direction.NORTH);
 
         assertEquals("The old position should remain unchanged when getting a new position", position.getX(), 5);
         assertEquals("The old position should remain unchanged when getting a new position", position.getY(), 5);
@@ -27,9 +28,9 @@ public class GameTest {
 
     @Test
     public void newPositionSouth() {
-        Game game = gameWithEmptyMaze(20, 20);
+        GameRunner runner = gameWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
-        Position newPosition = game.newPosition(position, Direction.SOUTH);
+        Position newPosition = runner.newPosition(position, Direction.SOUTH);
 
         assertEquals("The old position should remain unchanged when getting a new position", position.getX(), 5);
         assertEquals("The old position should remain unchanged when getting a new position", position.getY(), 5);
@@ -40,9 +41,9 @@ public class GameTest {
 
     @Test
     public void newPositionWest() {
-        Game game = gameWithEmptyMaze(20, 20);
+        GameRunner runner = gameWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
-        Position newPosition = game.newPosition(position, Direction.WEST);
+        Position newPosition = runner.newPosition(position, Direction.WEST);
 
         assertEquals("The old position should remain unchanged when getting a new position", position.getX(), 5);
         assertEquals("The old position should remain unchanged when getting a new position", position.getY(), 5);
@@ -53,9 +54,9 @@ public class GameTest {
 
     @Test
     public void newPositionEast() {
-        Game game = gameWithEmptyMaze(20, 20);
+        GameRunner runner = gameWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
-        Position newPosition = game.newPosition(position, Direction.EAST);
+        Position newPosition = runner.newPosition(position, Direction.EAST);
 
         assertEquals("The old position should remain unchanged when getting a new position", position.getX(), 5);
         assertEquals("The old position should remain unchanged when getting a new position", position.getY(), 5);
@@ -66,9 +67,9 @@ public class GameTest {
 
     @Test
     public void newPositionLoopsY() {
-        Game game = gameWithEmptyMaze(20, 20);
+        GameRunner runner = gameWithEmptyMaze(20, 20);
         Position position = new Position(5, 19);
-        Position newPosition = game.newPosition(position, Direction.SOUTH);
+        Position newPosition = runner.newPosition(position, Direction.SOUTH);
 
         assertEquals("The old position should remain unchanged when getting a new position", position.getX(), 5);
         assertEquals("The old position should remain unchanged when getting a new position", position.getY(), 19);
@@ -79,9 +80,9 @@ public class GameTest {
 
     @Test
     public void newPositionLoopsX() {
-        Game game = gameWithEmptyMaze(20, 20);
+        GameRunner runner = gameWithEmptyMaze(20, 20);
         Position position = new Position(0, 5);
-        Position newPosition = game.newPosition(position, Direction.WEST);
+        Position newPosition = runner.newPosition(position, Direction.WEST);
 
         assertEquals("The old position should remain unchanged when getting a new position", position.getX(), 0);
         assertEquals("The old position should remain unchanged when getting a new position", position.getY(), 5);
