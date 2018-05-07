@@ -5,6 +5,6 @@ import org.fullstack5.pacmanapi.models.response.GameState;
 import reactor.core.publisher.Flux;
 
 public interface GameService {
-    Flux<GameState> get(String pinCode);
+    Flux<GameState> getState(String gameId);
     GameRegistered register();
 }

@@ -23,8 +23,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Flux<GameState> get(String pinCode) {
-        return fluxes.get(pinCode);
+    public Flux<GameState> getState(String gameId) {
+        return fluxes.get(gameId);
     }
 
     @Override
