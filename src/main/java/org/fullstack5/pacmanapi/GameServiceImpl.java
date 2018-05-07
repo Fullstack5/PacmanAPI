@@ -27,7 +27,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public String start() {
-        String pinCode = PinCodeGenerator.createPinCode();
+        String pinCode = PinCode.create();
 
 
 

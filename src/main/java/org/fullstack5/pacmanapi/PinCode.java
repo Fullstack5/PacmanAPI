@@ -1,7 +1,7 @@
 package org.fullstack5.pacmanapi;
 
-public class PinCodeGenerator {
-    static String createPinCode() {
+public class PinCode {
+    static String create() {
         return "012345";
     }
 }
