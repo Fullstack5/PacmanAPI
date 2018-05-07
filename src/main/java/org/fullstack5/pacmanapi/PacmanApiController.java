@@ -1,5 +1,6 @@
 package org.fullstack5.pacmanapi;
 
+import org.fullstack5.pacmanapi.models.response.GameRegistered;
 import org.fullstack5.pacmanapi.models.response.GameState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,14 +14,14 @@ public class PacmanApiController {
     @Autowired
     GameService service;
 
-    @GetMapping(path = "/gameState/{pinCode}", produces = "application/stream+json")
+    @GetMapping(path = "/gameState/{gameId}", produces = "application/stream+json")
     public Flux<GameState> getGameState(
-            @PathVariable("pinCode") String pinCode) {
-        return service.get(pinCode);
+            @PathVariable("gameId") String gameId) {
+        return service.get(gameId);
     }
 
     @GetMapping(path = "/register-game")
-    public String registerGame() {
+    public GameRegistered registerGame() {
         return service.register();
     }
 }

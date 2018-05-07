@@ -1,6 +1,7 @@
 package org.fullstack5.pacmanapi;
 
 import org.fullstack5.pacmanapi.models.*;
+import org.fullstack5.pacmanapi.models.response.GameRegistered;
 import org.fullstack5.pacmanapi.models.response.GameState;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.ConnectableFlux;
@@ -27,37 +28,34 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public String register() {
-        // generate a new pinCode for the new game
-        String newPinCode;
+    public GameRegistered register() {
+        // generate a non-conflicting pinCode for the new game
+        String pinCode;
         do {
-            newPinCode = PinCode.create();
-        } while (games.containsKey(newPinCode));
+            pinCode = PinCode.create();
+        } while (games.containsKey(pinCode));
 
-        // and make this pinCode final to use in the Flux lambda
-        final String pinCode = newPinCode;
+        // and make this pinCode the final gameId for use in the Flux lambda
+        final String gameId = pinCode;
 
-        Game game = new Game();
+        Maze maze = new Maze(20, 20);
+        Game game = new Game(maze);
         game.setTime(0);
-        Maze maze = new Maze();
-        maze.setHeight(20);
-        maze.setWidth(20);
-        game.setMaze(maze);
         game.setPacman(new Piece(new Position(0, 0), Direction.NORTH));
-        games.put(pinCode, game);
+        games.put(gameId, game);
 
         ConnectableFlux<GameState> flux = Flux
                 .interval(Duration.ofSeconds(1))
-                .map(t -> this.step(pinCode))
+                .map(t -> this.step(gameId))
                 .publish();
-        fluxes.put(pinCode, flux);
+        fluxes.put(gameId, flux);
         flux.connect();
 
-        return pinCode;
+        return new GameRegistered(gameId);
     }
 
-    public GameState step(String pinCode) {
-        Game game = games.get(pinCode);
+    public GameState step(String gameId) {
+        Game game = games.get(gameId);
 
         // update time
         long time = game.getTime();
