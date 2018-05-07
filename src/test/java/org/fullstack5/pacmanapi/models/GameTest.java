@@ -7,11 +7,8 @@ import static org.junit.Assert.assertEquals;
 public class GameTest {
 
     public Game gameWithEmptyMaze(int height, int width) {
-        Game game = new Game();
-        Maze maze = new Maze();
-        maze.setHeight(height);
-        maze.setWidth(width);
-        game.setMaze(maze);
+        Maze maze = new Maze(height, width);
+        Game game = new Game(maze);
         return game;
     }
 
