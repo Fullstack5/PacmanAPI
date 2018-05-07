@@ -1,6 +1,7 @@
 package org.fullstack5.pacmanapi;
 
 import org.fullstack5.pacmanapi.models.*;
+import org.fullstack5.pacmanapi.models.response.GameState;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
