@@ -12,4 +12,8 @@ import org.fullstack5.pacmanapi.models.Position;
 public final class GameState {
     private final long time;
     private final Position pacman;
+    private final Position blinky;
+    private final Position pinky;
+    private final Position inky;
+    private final Position clyde;
 }
