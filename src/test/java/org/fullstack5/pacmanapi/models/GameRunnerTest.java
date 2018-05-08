@@ -4,12 +4,14 @@ import org.fullstack5.pacmanapi.GameRunner;
 import org.fullstack5.pacmanapi.models.response.GameState;
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static org.junit.Assert.assertEquals;
 
 public class GameRunnerTest {
 
     public GameRunner gameWithEmptyMaze(int height, int width) {
-        Maze maze = new Maze(height, width);
+        Maze maze = new Maze(new boolean[width][height], Collections.emptyList(), Collections.emptyList(), null, null, null, null, null);
         Position position = new Position(0, 0);
         Game game = new Game(maze, position, position, position, position, position);
         return new GameRunner(game);
