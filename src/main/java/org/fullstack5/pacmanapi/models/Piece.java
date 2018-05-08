@@ -3,8 +3,6 @@ package org.fullstack5.pacmanapi.models;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * A movable piece within the game.
  */
@@ -18,7 +16,7 @@ public final class Piece {
     private Position position;
     private Direction direction;
 
-    public Piece(@NotNull Type type, @NotNull Position position) {
+    public Piece(Type type, Position position) {
         this.type = type;
         this.position = position;
     }

@@ -3,7 +3,6 @@ package org.fullstack5.pacmanapi.models;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public final class Game {
     private final Piece inky;
     private final Piece clyde;
 
-    public Game(final @NotNull Maze maze) {
+    public Game(final Maze maze) {
         this.maze = maze;
 
         pieces = new ArrayList();
