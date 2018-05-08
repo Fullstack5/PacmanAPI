@@ -1,25 +1,28 @@
 package org.fullstack5.pacmanapi.models;
 
 import org.fullstack5.pacmanapi.GameRunner;
-import org.fullstack5.pacmanapi.models.response.GameState;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class GameRunnerTest {
 
-    public GameRunner gameWithEmptyMaze(int height, int width) {
-        Maze maze = new Maze(new boolean[width][height], Collections.emptyList(), Collections.emptyList(), null, null, null, null, null);
-        Position position = new Position(0, 0);
-        Game game = new Game(maze, position, position, position, position, position);
+    private GameRunner runnerWithEmptyMaze(int height, int width) {
+        boolean[][] noWalls = new boolean[width][height];
+        Position spawn = new Position(0, 0);
+        List<Position> noDots = Collections.emptyList();
+        List<Position> noPowerPellets = Collections.emptyList();
+        Maze maze = new Maze(noWalls, noDots, noPowerPellets, spawn, spawn, spawn, spawn, spawn);
+        Game game = new Game(maze);
         return new GameRunner(game);
     }
 
     @Test
     public void newPositionNorth() {
-        GameRunner runner = gameWithEmptyMaze(20, 20);
+        GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
         Position newPosition = runner.newPosition(position, Direction.NORTH);
 
@@ -32,7 +35,7 @@ public class GameRunnerTest {
 
     @Test
     public void newPositionSouth() {
-        GameRunner runner = gameWithEmptyMaze(20, 20);
+        GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
         Position newPosition = runner.newPosition(position, Direction.SOUTH);
 
@@ -45,7 +48,7 @@ public class GameRunnerTest {
 
     @Test
     public void newPositionWest() {
-        GameRunner runner = gameWithEmptyMaze(20, 20);
+        GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
         Position newPosition = runner.newPosition(position, Direction.WEST);
 
@@ -58,7 +61,7 @@ public class GameRunnerTest {
 
     @Test
     public void newPositionEast() {
-        GameRunner runner = gameWithEmptyMaze(20, 20);
+        GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
         Position newPosition = runner.newPosition(position, Direction.EAST);
 
@@ -71,7 +74,7 @@ public class GameRunnerTest {
 
     @Test
     public void newPositionLoopsY() {
-        GameRunner runner = gameWithEmptyMaze(20, 20);
+        GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 19);
         Position newPosition = runner.newPosition(position, Direction.SOUTH);
 
@@ -84,7 +87,7 @@ public class GameRunnerTest {
 
     @Test
     public void newPositionLoopsX() {
-        GameRunner runner = gameWithEmptyMaze(20, 20);
+        GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(0, 5);
         Position newPosition = runner.newPosition(position, Direction.WEST);
 

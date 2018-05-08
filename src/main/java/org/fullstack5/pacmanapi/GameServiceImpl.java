@@ -1,13 +1,15 @@
 package org.fullstack5.pacmanapi;
 
-import org.fullstack5.pacmanapi.models.*;
+import org.fullstack5.pacmanapi.models.Direction;
+import org.fullstack5.pacmanapi.models.Game;
+import org.fullstack5.pacmanapi.models.Maze;
+import org.fullstack5.pacmanapi.models.Piece;
 import org.fullstack5.pacmanapi.models.response.GameRegistered;
 import org.fullstack5.pacmanapi.models.response.GameState;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,9 +41,7 @@ public class GameServiceImpl implements GameService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Position pacmanPosition = new Position(0, 0);
-        Position ghostPosition = new Position(10, 10);
-        Game game = new Game(maze, pacmanPosition, ghostPosition, ghostPosition, ghostPosition, ghostPosition);
+        Game game = new Game(maze);
 
         games.put(gameId, new GameRunner(game));
 

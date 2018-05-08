@@ -23,29 +23,24 @@ public final class Game {
     private final Piece inky;
     private final Piece clyde;
 
-    public Game(final @NotNull Maze maze,
-                Position pacmanPosition,
-                Position blinkyPosition,
-                Position pinkyPosition,
-                Position inkyPosition,
-                Position clydePosition) {
+    public Game(final @NotNull Maze maze) {
         this.maze = maze;
 
         pieces = new ArrayList();
 
-        pacman = new Piece(Piece.Type.PACMAN, pacmanPosition);
+        pacman = new Piece(Piece.Type.PACMAN, maze.getPacmanSpawn());
         pieces.add(pacman);
 
-        blinky = new Piece(Piece.Type.BLINKY, blinkyPosition);
+        blinky = new Piece(Piece.Type.BLINKY, maze.getBlinkySpawn());
         pieces.add(blinky);
 
-        pinky = new Piece(Piece.Type.PINKY, pinkyPosition);
+        pinky = new Piece(Piece.Type.PINKY, maze.getPinkySpawn());
         pieces.add(pinky);
 
-        inky = new Piece(Piece.Type.INKY, inkyPosition);
+        inky = new Piece(Piece.Type.INKY, maze.getInkySpawn());
         pieces.add(inky);
 
-        clyde = new Piece(Piece.Type.CLYDE, clydePosition);
+        clyde = new Piece(Piece.Type.CLYDE, maze.getClydeSpawn());
         pieces.add(clyde);
     }
 }
