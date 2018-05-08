@@ -3,12 +3,14 @@ package org.fullstack5.pacmanapi.models;
 import org.fullstack5.pacmanapi.GameRunner;
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static org.junit.Assert.assertEquals;
 
 public class GameRunnerTest {
 
     public GameRunner gameWithEmptyMaze(int height, int width) {
-        Maze maze = new Maze(height, width);
+        Maze maze = new Maze(new boolean[width][height], Collections.emptyList(), Collections.emptyList(), null, null, null, null, null);
         Game game = new Game(maze);
         return new GameRunner(game);
     }
