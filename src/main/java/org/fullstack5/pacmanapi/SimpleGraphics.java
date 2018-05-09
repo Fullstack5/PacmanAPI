@@ -1,14 +1,16 @@
 package org.fullstack5.pacmanapi;
 
 import org.fullstack5.pacmanapi.models.Direction;
-
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import org.fullstack5.pacmanapi.models.Piece;
 import org.fullstack5.pacmanapi.models.Position;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 /**
  * Created by qc53bf on 8-5-2018.
@@ -17,13 +19,15 @@ public class SimpleGraphics {
 
     public static void main(String... args) {
         final JFrame frame = new JFrame();
-        JPanel panel = new MyPanel();
-        setKeyboard(panel);
+        final JPanel panel = new MyPanel();
+        panel.setFocusable(true);
+        panel.requestFocusInWindow();
+        panel.addKeyListener(new PacmanKeyListener());
         frame.add(panel);
         frame.pack();
         frame.setSize(1024, 768);
         frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
         new Thread(new Runner(frame)).start();
     }
@@ -33,7 +37,7 @@ public class SimpleGraphics {
     private static final int msPerFrame = 100;
 
     private static int progress = 0;
-    private static final Piece pacman = new Piece(new Position(1, 1), Direction.EAST);
+    private static final Piece pacman = new Piece(Piece.Type.PACMAN, new Position(1, 1), Direction.EAST);
 
     private static class Runner implements Runnable {
 
@@ -64,9 +68,8 @@ public class SimpleGraphics {
 
     private static class MyPanel extends JPanel {
 
-
         @Override
-        protected void paintComponent(Graphics g) {
+        protected void paintComponent(final Graphics g) {
             boolean[][] grid = new boolean[][]{
                     {true, true, true, true, true},
                     {true, false, false, false, true},
@@ -103,40 +106,28 @@ public class SimpleGraphics {
         }
     }
 
-    private static void setKeyboard(JPanel panel) {
-        panel.setFocusable(true);
-        panel.requestFocusInWindow();
-        panel.addKeyListener(new KeyListener() {
+    private static class PacmanKeyListener extends KeyAdapter {
 
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_LEFT: {
-                        pacman.setDirection(Direction.WEST);
-                        break;
-                    }
-                    case KeyEvent.VK_RIGHT: {
-                        pacman.setDirection(Direction.EAST);
-                        break;
-                    }
-                    case KeyEvent.VK_UP: {
-                        pacman.setDirection(Direction.NORTH);
-                        break;
-                    }
-                    case KeyEvent.VK_DOWN: {
-                        pacman.setDirection(Direction.SOUTH);
-                        break;
-                    }
+        @Override
+        public final void keyPressed(KeyEvent e) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_LEFT: {
+                    pacman.setDirection(Direction.WEST);
+                    break;
+                }
+                case KeyEvent.VK_RIGHT: {
+                    pacman.setDirection(Direction.EAST);
+                    break;
+                }
+                case KeyEvent.VK_UP: {
+                    pacman.setDirection(Direction.NORTH);
+                    break;
+                }
+                case KeyEvent.VK_DOWN: {
+                    pacman.setDirection(Direction.SOUTH);
+                    break;
                 }
             }
-        });
+        }
     }
 }
