@@ -2,10 +2,13 @@ package org.fullstack5.pacmanapi;
 
 import org.fullstack5.pacmanapi.models.Direction;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import org.fullstack5.pacmanapi.models.Piece;
+import org.fullstack5.pacmanapi.models.Position;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by qc53bf on 8-5-2018.
@@ -22,7 +25,6 @@ public class SimpleGraphics {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-
         new Thread(new Runner(frame)).start();
     }
 
@@ -30,9 +32,8 @@ public class SimpleGraphics {
     private static final int framesPerMove = 10;
     private static final int msPerFrame = 100;
 
-    private static int positionX = 10;
-    private static int positionY = 10;
-    private static Direction direction = Direction.EAST;
+    private static int progress = 0;
+    private static final Piece pacman = new Piece(new Position(1, 1), Direction.EAST);
 
     private static class Runner implements Runnable {
 
@@ -44,28 +45,13 @@ public class SimpleGraphics {
 
         @Override
         public void run() {
-
-            int counter = 0;
             while (true) {
-
-                if (counter >= 30 && counter < 60) {
-                    direction = Direction.SOUTH;
-                    positionY++;
+                progress++;
+                if (progress >= 10) {
+                    progress = 0;
+                    pacman.setPosition(new Position(pacman.getPosition().getX() + pacman.getDirection().getXInc(), pacman.getPosition().getY() + pacman.getDirection().getYInc()));
+                    pacman.setDirection(Direction.random());
                 }
-
-                if (counter >=60 && counter < 90) {
-                    direction = Direction.WEST;
-                    positionX--;
-
-                }  if (counter >=90 && counter < 120) {
-                    direction = Direction.NORTH;
-                    positionY--;
-
-                }else {
-                    positionX++;
-                }
-
-                counter++;
                 frame.repaint();
                 try {
                     Thread.sleep(msPerFrame);
@@ -78,8 +64,6 @@ public class SimpleGraphics {
 
     private static class MyPanel extends JPanel {
 
-        int x = gridWidth;
-        int y = gridWidth;
 
         @Override
         protected void paintComponent(Graphics g) {
@@ -103,40 +87,21 @@ public class SimpleGraphics {
                     g.fillRect(x * gridWidth, y * gridWidth, gridWidth - 1, gridWidth - 1);
                 }
             }
-            int animProgress = positionX % framesPerMove;
+            int animProgress = (progress + 5) % framesPerMove;
             if (animProgress > 6) {
                 animProgress = framesPerMove - animProgress;
             }
             g.setColor(Color.yellow);
-            final int startAngle;
+            final int startAngle = pacman.getDirection().getAngle();
+            g.fillArc(
+                    gridWidth * pacman.getPosition().getX() + gridWidth * progress * pacman.getDirection().getXInc() / framesPerMove,
+                    gridWidth * pacman.getPosition().getY() + gridWidth * progress * pacman.getDirection().getYInc() / framesPerMove,
+                    gridWidth - 1, gridWidth - 1, startAngle + 45 - animProgress * 9, 270 + animProgress * 18);
 
-
-            switch (direction) {
-                case NORTH:
-                    startAngle = 90;
-                    y = gridWidth / positionY / framesPerMove;
-                    break;
-                case EAST:
-                    startAngle = 0;
-                    x = gridWidth * positionX / framesPerMove;
-
-                    break;
-                case SOUTH:
-                    startAngle = 270;
-                    y = gridWidth * positionY / framesPerMove;
-                    break;
-                case WEST:
-                    startAngle = 180;
-                    x = gridWidth / positionX / framesPerMove;
-                    break;
-                default:
-                    throw new IllegalArgumentException("Direction " + direction + " not known");
-            }
-
-            g.fillArc(x, y, gridWidth - 1, gridWidth - 1, startAngle + 45 - animProgress * 9, 270 + animProgress * 18);
+            g.setColor(Color.black);
+            g.drawString(String.format("X = %d; Y = %d; direction = %s; progress = %d", pacman.getPosition().getX(), pacman.getPosition().getY(), pacman.getDirection().name(), progress), 50, 250);
         }
     }
-
 
     private static void setKeyboard(JPanel panel) {
         panel.setFocusable(true);
@@ -155,19 +120,19 @@ public class SimpleGraphics {
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_LEFT: {
-                        direction = Direction.WEST;
+                        pacman.setDirection(Direction.WEST);
                         break;
                     }
                     case KeyEvent.VK_RIGHT: {
-                        direction = Direction.EAST;
+                        pacman.setDirection(Direction.EAST);
                         break;
                     }
                     case KeyEvent.VK_UP: {
-                        direction = Direction.NORTH;
+                        pacman.setDirection(Direction.NORTH);
                         break;
                     }
                     case KeyEvent.VK_DOWN: {
-                        direction = Direction.SOUTH;
+                        pacman.setDirection(Direction.SOUTH);
                         break;
                     }
                 }
