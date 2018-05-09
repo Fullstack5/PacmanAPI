@@ -29,8 +29,9 @@ public final class MazeLoader {
     private static final int COLOR_CLYDE_SPAWN = -14066; // new Color(255, 201, 14).getRGB();
 
     static Maze loadMaze(final int mazeId) throws IOException {
-        final String filename = String.format("mazes/maze%s.png", mazeId);
+        final String filename = String.format("src/main/resources/mazes/maze%s.png", mazeId);
         final Path path = Paths.get(filename);
+//        System.out.println(path.toAbsolutePath().toString());
         final BufferedImage image = ImageIO.read(Files.newInputStream(path));
         return loadMaze(image);
     }
@@ -46,8 +47,8 @@ public final class MazeLoader {
         Position pinkySpawn = null;
         Position inkySpawn = null;
         Position clydeSpawn = null;
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 boolean wall = false;
                 switch(image.getRGB(x, y)) {
                 case COLOR_WALL:
@@ -91,6 +92,8 @@ public final class MazeLoader {
                     }
                     clydeSpawn = new Position(x, y);
                     break;
+                default:
+                    throw new IllegalStateException(String.format("Unknown pixel type at x=%d y=%d! %s", x, y, new Color(image.getRGB(x, y)).toString()));
                 };
                 walls[x][y] = wall;
             }
@@ -122,13 +125,19 @@ public final class MazeLoader {
     private static void validateWallConsistency(final boolean[][] walls) {
         final int width = walls.length;
         final int height = walls[0].length;
+//        for (int y = 0; y < height; y++) {
+//            for (int x = 0; x < width; x++) {
+//                System.out.print(walls[x][y] ? "X" : " ");
+//            }
+//            System.out.println();
+//        }
         for (int x = 0; x < width; x++) {
-            if (walls[x][0] ^ !walls[x][height - 1]) {
-                throw new IllegalStateException("Illegal wrap-around at x = " + x);
+            if (walls[x][0] ^ walls[x][height - 1]) {
+                throw new IllegalStateException("Illegal wrap-around at x = " + x + " (" + walls[x][0] + " vs " + walls[x][height - 1] + ")");
             }
         }
         for (int y = 0; y < height; y++) {
-            if (walls[0][y] ^ !walls[width - 1][y]) {
+            if (walls[0][y] ^ walls[width - 1][y]) {
                 throw new IllegalStateException("Illegal wrap-around at y = " + y);
             }
         }
