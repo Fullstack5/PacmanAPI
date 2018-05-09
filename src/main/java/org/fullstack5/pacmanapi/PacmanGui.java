@@ -22,7 +22,7 @@ public final class PacmanGui {
 
     private static final int GRID_WIDTH = 40;
     private static final int MS_PER_TICK = 1000;
-    private static final int FRAMES_PER_TICK = 20;
+    private static final int FRAMES_PER_TICK = 10;
     private static final int MS_PER_FRAME = MS_PER_TICK / FRAMES_PER_TICK;
 
     private final Maze maze;
@@ -47,7 +47,8 @@ public final class PacmanGui {
     }
 
     public final void initialize(final Flux<GameState> flux) {
-        flux.all(state -> {this.state = state;return true;});
+        flux.doOnEach(consumer -> {this.state = consumer.get();System.out.println("Updated state");});
+//        flux.any(state -> {this.state = state;System.out.println("Updated state");return true;});
 
         final JFrame frame = new JFrame();
         final JPanel panel = new MyPanel();
@@ -79,9 +80,11 @@ public final class PacmanGui {
                 renderProgress++;
                 if (renderProgress >= 10) {
                     renderProgress = 0;
-                    final Piece pacman = state.getPacman();
-                    pacman.setPosition(new Position(pacman.getPosition().getX() + pacman.getDirection().getDeltaX(), pacman.getPosition().getY() + pacman.getDirection().getDeltaY()));
-                    pacman.setDirection(Direction.random());
+                    if (state != null) {
+                        final Piece pacman = state.getPacman();
+                        pacman.setPosition(new Position(pacman.getPosition().getX() + pacman.getDirection().getDeltaX(), pacman.getPosition().getY() + pacman.getDirection().getDeltaY()));
+                        pacman.setDirection(Direction.random());
+                    }
                 }
                 frame.repaint();
                 try {

@@ -136,14 +136,14 @@ public class GameRunnerTest {
         GameRunner runner = runnerWithPacman(20, 20, pacmanSpawn);
         runner.performStep();
 
-        GameState state = runner.getState();
+        GameState state = runner.createState();
         assertEquals("Pacman should not have moved", pacmanSpawn, state.getPacman().getPosition());
         assertEquals("Time should have moved forward", 1, state.getTime());
 
         runner.setDirection(Direction.NORTH, Piece.Type.PACMAN);
         runner.performStep();
 
-        state = runner.getState();
+        state = runner.createState();
         assertNotEquals("Pacman should have moved", pacmanSpawn, state.getPacman());
         assertEquals("Pacman should have moved in the Y direction", 9, state.getPacman().getPosition().getY());
         assertEquals("Time should have moved forward", 2, state.getTime());

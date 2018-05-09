@@ -39,11 +39,10 @@ public final class GameRunner {
         game.getPieces().forEach(piece ->
                 piece.setPosition(determineNewPosition(piece.getPosition(), piece.getDirection()))
         );
-
-        return getState();
+        return createState();
     }
 
-    public final GameState getState() {
+    public final GameState createState() {
         return new GameState(
                 game.getTime(),
                 State.IN_PROGRESS,
