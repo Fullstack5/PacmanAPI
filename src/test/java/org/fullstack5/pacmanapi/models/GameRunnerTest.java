@@ -34,7 +34,7 @@ public class GameRunnerTest {
     public void newPositionNorth() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
-        Position newPosition = runner.newPosition(position, Direction.NORTH);
+        Position newPosition = runner.determineNewPosition(position, Direction.NORTH);
 
         assertEquals("The old position should remain unchanged when getting a new position", 5, position.getX());
         assertEquals("The old position should remain unchanged when getting a new position", 5, position.getY());
@@ -47,7 +47,7 @@ public class GameRunnerTest {
     public void newPositionSouth() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
-        Position newPosition = runner.newPosition(position, Direction.SOUTH);
+        Position newPosition = runner.determineNewPosition(position, Direction.SOUTH);
 
         assertEquals("The old position should remain unchanged when getting a new position", 5, position.getX());
         assertEquals("The old position should remain unchanged when getting a new position", 5, position.getY());
@@ -60,7 +60,7 @@ public class GameRunnerTest {
     public void newPositionWest() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
-        Position newPosition = runner.newPosition(position, Direction.WEST);
+        Position newPosition = runner.determineNewPosition(position, Direction.WEST);
 
         assertEquals("The old position should remain unchanged when getting a new position", 5, position.getX());
         assertEquals("The old position should remain unchanged when getting a new position", 5, position.getY());
@@ -73,7 +73,7 @@ public class GameRunnerTest {
     public void newPositionEast() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
-        Position newPosition = runner.newPosition(position, Direction.EAST);
+        Position newPosition = runner.determineNewPosition(position, Direction.EAST);
 
         assertEquals("The old position should remain unchanged when getting a new position", 5, position.getX());
         assertEquals("The old position should remain unchanged when getting a new position", 5, position.getY());
@@ -86,7 +86,7 @@ public class GameRunnerTest {
     public void newPositionLoopsY() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 19);
-        Position newPosition = runner.newPosition(position, Direction.SOUTH);
+        Position newPosition = runner.determineNewPosition(position, Direction.SOUTH);
 
         assertEquals("The old position should remain unchanged when getting a new position", 5, position.getX());
         assertEquals("The old position should remain unchanged when getting a new position", 19, position.getY());
@@ -99,7 +99,7 @@ public class GameRunnerTest {
     public void newPositionLoopsX() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(0, 5);
-        Position newPosition = runner.newPosition(position, Direction.WEST);
+        Position newPosition = runner.determineNewPosition(position, Direction.WEST);
 
         assertEquals("The old position should remain unchanged when getting a new position", 0, position.getX());
         assertEquals("The old position should remain unchanged when getting a new position", 5, position.getY());
@@ -112,14 +112,14 @@ public class GameRunnerTest {
     public void stepPacmanMoves() {
         Position pacmanSpawn = new Position(10, 10);
         GameRunner runner = runnerWithPacman(20, 20, pacmanSpawn);
-        runner.step();
+        runner.performStep();
 
         GameState state = runner.getState();
         assertEquals("Pacman should not have moved", pacmanSpawn, state.getPacman());
         assertEquals("Time should have moved forward", 1, state.getTime());
 
         runner.setDirection(Direction.NORTH, Piece.Type.PACMAN);
-        runner.step();
+        runner.performStep();
 
         state = runner.getState();
         assertNotEquals("Pacman should have moved", pacmanSpawn, state.getPacman());

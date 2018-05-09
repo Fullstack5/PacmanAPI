@@ -1,5 +1,6 @@
 package org.fullstack5.pacmanapi;
 
+import lombok.Getter;
 import org.fullstack5.pacmanapi.models.*;
 import org.fullstack5.pacmanapi.models.response.GameState;
 import reactor.core.publisher.ConnectableFlux;
@@ -10,25 +11,22 @@ import java.time.Duration;
 /**
  * A runner to execute the game rules and logic
  */
-public class GameRunner {
+public final class GameRunner {
 
-    final Game game;
-    final ConnectableFlux<GameState> flux;
+    private final Game game;
+    @Getter
+    private final ConnectableFlux<GameState> flux;
 
-    public GameRunner(Game game) {
+    public GameRunner(final Game game) {
         this.game = game;
         this.flux = Flux
                 .interval(Duration.ofSeconds(1))
-                .map(t -> this.step())
+                .map(t -> this.performStep())
                 .publish();
         flux.connect();
     }
 
-    public ConnectableFlux<GameState> getFlux() {
-        return this.flux;
-    }
-
-    public GameState step() {
+    public final GameState performStep() {
         // update time
         long time = game.getTime();
         game.setTime(time + 1);
@@ -37,13 +35,13 @@ public class GameRunner {
         // update all pieces
         game.getPieces().stream()
                 .forEach(piece ->
-                        piece.setPosition(newPosition(piece.getPosition(), piece.getDirection()))
+                        piece.setPosition(determineNewPosition(piece.getPosition(), piece.getDirection()))
                 );
 
         return getState();
     }
 
-    public GameState getState() {
+    public final GameState getState() {
         return new GameState(
                 game.getTime(),
                 game.getRemainingPacdots(),
@@ -56,11 +54,11 @@ public class GameRunner {
         );
     }
 
-    public void setDirection(Direction direction, Piece.Type type) {
+    public final void setDirection(final Direction direction, final Piece.Type type) {
         getPiece(type).setDirection(direction);
     }
 
-    private Piece getPiece(Piece.Type type) {
+    private Piece getPiece(final Piece.Type type) {
         switch (type) {
             case PACMAN:
                 return game.getPacman();
@@ -77,43 +75,20 @@ public class GameRunner {
         }
     }
 
-    public Position newPosition(Position position, Direction direction) {
-        if (position == null) {
-            return null;
-        }
-        if (direction == null) {
+    public final Position determineNewPosition(final Position position, final Direction direction) {
+        if (position == null || direction == null) {
             return position;
         }
+        final Maze maze = game.getMaze();
+        return new Position(
+                forceBetween(position.getX() + direction.getXInc(), 0, maze.getWidth() - 1),
+                forceBetween(position.getY() + direction.getYInc(), 0, maze.getHeight() - 1));
+    }
 
-        Maze maze = game.getMaze();
-        int y, x;
-        switch (direction) {
-            case NORTH:
-                y = position.getY() - 1;
-                if (y < 0) {
-                    y = maze.getWidth() - 1;
-                }
-                return new Position(position.getX(), y);
-            case SOUTH:
-                y = position.getY() + 1;
-                if (y >= maze.getWidth()) {
-                    y = 0;
-                }
-                return new Position(position.getX(), y);
-            case WEST:
-                x = position.getX() - 1;
-                if (x < 0) {
-                    x = maze.getHeight() - 1;
-                }
-                return new Position(x, position.getY());
-            case EAST:
-                x = position.getX() + 1;
-                if (x >= maze.getHeight()) {
-                    x = 0;
-                }
-                return new Position(x, position.getY());
-            default:
-                return position;
-        }
+    /**
+     * Ensure min <= value <= max
+     */
+    private int forceBetween(final int value, final int min, final int max) {
+        return Math.max(Math.min(value, max), min);
     }
 }
