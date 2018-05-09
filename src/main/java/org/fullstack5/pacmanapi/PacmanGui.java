@@ -47,6 +47,8 @@ public final class PacmanGui {
     }
 
     public final void initialize(final Flux<GameState> flux) {
+        flux.all(state -> {this.state = state;return true;});
+
         final JFrame frame = new JFrame();
         final JPanel panel = new MyPanel();
         panel.setFocusable(true);
@@ -54,12 +56,12 @@ public final class PacmanGui {
         panel.addKeyListener(new PacmanKeyListener());
         frame.add(panel);
         frame.pack();
-        frame.setSize(1024, 768);
+        frame.setSize(maze.getWidth() * GRID_WIDTH + 16, maze.getHeight() * GRID_WIDTH + 38);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setTitle("Chapter Fullstack 5 Pacman Simulator");
         frame.setVisible(true);
 
-        flux.all(state -> {this.state = state;return true;});
         new Thread(new GuiRunner(frame)).start();
     }
 
@@ -97,12 +99,12 @@ public final class PacmanGui {
         protected void paintComponent(final Graphics g) {
             renderMaze(g);
             renderPacman(g);
-            g.setColor(Color.black);
-            final Piece pacman = state.getPacman();
-            g.drawString(String.format("X = %d; Y = %d; direction = %s; renderProgress = %d", pacman.getPosition().getX(), pacman.getPosition().getY(), pacman.getDirection().name(), renderProgress), 50, 250);
         }
 
         private void renderPacman(final Graphics g) {
+            if (state == null) {
+                return;
+            }
             final Piece pacman = state.getPacman();
             int animProgress = (renderProgress + 5) % FRAMES_PER_TICK;
             if (animProgress > 6) {
@@ -114,6 +116,9 @@ public final class PacmanGui {
                     GRID_WIDTH * pacman.getPosition().getX() + GRID_WIDTH * renderProgress * pacman.getDirection().getXInc() / FRAMES_PER_TICK,
                     GRID_WIDTH * pacman.getPosition().getY() + GRID_WIDTH * renderProgress * pacman.getDirection().getYInc() / FRAMES_PER_TICK,
                     GRID_WIDTH - 1, GRID_WIDTH - 1, startAngle + 45 - animProgress * 9, 270 + animProgress * 18);
+
+            g.setColor(Color.black);
+            g.drawString(String.format("X = %d; Y = %d; direction = %s; renderProgress = %d", pacman.getPosition().getX(), pacman.getPosition().getY(), pacman.getDirection().name(), renderProgress), 50, 250);
         }
 
         private void renderMaze(final Graphics g) {
