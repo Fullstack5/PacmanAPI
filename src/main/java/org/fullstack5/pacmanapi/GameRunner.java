@@ -46,6 +46,8 @@ public class GameRunner {
     public GameState getState() {
         return new GameState(
                 game.getTime(),
+                game.getRemainingPacdots(),
+                game.getRemainingPellets(),
                 game.getPacman().getPosition(),
                 game.getBlinky().getPosition(),
                 game.getPinky().getPosition(),

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -15,6 +16,8 @@ public final class Game {
 
     private final Maze maze;
     private long time;
+    private final List<Position> remainingPacdots = new ArrayList<>();
+    private final List<Position> remainingPellets = new ArrayList<>();
     private final List<Piece> pieces;
     private final Piece pacman;
     private final Piece blinky;
@@ -25,7 +28,10 @@ public final class Game {
     public Game(final Maze maze) {
         this.maze = maze;
 
-        pieces = new ArrayList();
+        remainingPacdots.addAll(maze.getDots());
+        remainingPellets.addAll(maze.getPowerPellets());
+
+        final List<Piece> pieces = new ArrayList<>();
 
         pacman = new Piece(Piece.Type.PACMAN, maze.getPacmanSpawn());
         pieces.add(pacman);
@@ -41,5 +47,7 @@ public final class Game {
 
         clyde = new Piece(Piece.Type.CLYDE, maze.getClydeSpawn());
         pieces.add(clyde);
+
+        this.pieces = Collections.unmodifiableList(pieces);
     }
 }
