@@ -23,7 +23,11 @@ public final class GameRunner {
                 .interval(Duration.ofSeconds(1))
                 .map(t -> this.performStep())
                 .publish();
+    }
+
+    final void start() {
         flux.connect();
+        new PacmanGui(game.getMaze()).initialize(flux);
     }
 
     public final GameState performStep() {
@@ -31,12 +35,10 @@ public final class GameRunner {
         long time = game.getTime();
         game.setTime(time + 1);
 
-
         // update all pieces
-        game.getPieces().stream()
-                .forEach(piece ->
-                        piece.setPosition(determineNewPosition(piece.getPosition(), piece.getDirection()))
-                );
+        game.getPieces().forEach(piece ->
+                piece.setPosition(determineNewPosition(piece.getPosition(), piece.getDirection()))
+        );
 
         return getState();
     }
@@ -46,11 +48,11 @@ public final class GameRunner {
                 game.getTime(),
                 game.getRemainingPacdots(),
                 game.getRemainingPellets(),
-                game.getPacman().getPosition(),
-                game.getBlinky().getPosition(),
-                game.getPinky().getPosition(),
-                game.getInky().getPosition(),
-                game.getClyde().getPosition()
+                game.getPacman(),
+                game.getBlinky(),
+                game.getPinky(),
+                game.getInky(),
+                game.getClyde()
         );
     }
 
@@ -81,14 +83,11 @@ public final class GameRunner {
         }
         final Maze maze = game.getMaze();
         return new Position(
-                forceBetween(position.getX() + direction.getXInc(), 0, maze.getWidth() - 1),
-                forceBetween(position.getY() + direction.getYInc(), 0, maze.getHeight() - 1));
+                wrapAround(position.getX() + direction.getXInc(), 0, maze.getWidth() - 1),
+                wrapAround(position.getY() + direction.getYInc(), 0, maze.getHeight() - 1));
     }
 
-    /**
-     * Ensure min <= value <= max
-     */
-    private int forceBetween(final int value, final int min, final int max) {
-        return Math.max(Math.min(value, max), min);
+    private int wrapAround(final int value, final int min, final int max) {
+        return value < min ? max : value > max ? min : value;
     }
 }

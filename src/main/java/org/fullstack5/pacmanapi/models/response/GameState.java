@@ -2,6 +2,7 @@ package org.fullstack5.pacmanapi.models.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.fullstack5.pacmanapi.models.Piece;
 import org.fullstack5.pacmanapi.models.Position;
 
 import java.util.List;
@@ -15,9 +16,9 @@ public final class GameState {
     private final long time;
     private final List<Position> remainingDots;
     private final List<Position> remainingPellets;
-    private final Position pacman;
-    private final Position blinky;
-    private final Position pinky;
-    private final Position inky;
-    private final Position clyde;
+    private final Piece pacman;
+    private final Piece blinky;
+    private final Piece pinky;
+    private final Piece inky;
+    private final Piece clyde;
 }

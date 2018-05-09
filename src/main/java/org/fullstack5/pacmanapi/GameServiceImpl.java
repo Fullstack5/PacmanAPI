@@ -43,7 +43,9 @@ public class GameServiceImpl implements GameService {
         }
         Game game = new Game(maze);
 
-        games.put(gameId, new GameRunner(game));
+        final GameRunner runner = new GameRunner(game);
+        games.put(gameId, runner);
+        runner.start();
 
         return new GameRegistered(gameId);
     }
