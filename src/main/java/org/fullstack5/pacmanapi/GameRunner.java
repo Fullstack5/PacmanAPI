@@ -84,6 +84,10 @@ public final class GameRunner {
         final Maze maze = game.getMaze();
         int x = boundedMove(position.getX(), direction.getDeltaX(), maze.getWidth());
         int y = boundedMove(position.getY(), direction.getDeltaY(), maze.getHeight());
+
+        if (maze.isWall(x, y)) {
+            return position;
+        }
         return new Position(x, y);
     }
 

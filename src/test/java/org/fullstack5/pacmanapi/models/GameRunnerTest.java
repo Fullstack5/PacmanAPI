@@ -29,6 +29,13 @@ public class GameRunnerTest {
         return new GameRunner(game);
     }
 
+    private GameRunner runnerWithWalls(boolean[][] walls) {
+        List<Position> noDots = Collections.emptyList();
+        List<Position> noPowerPellets = Collections.emptyList();
+        Maze maze = new Maze(walls, noDots, noPowerPellets, null, null, null, null, null);
+        Game game = new Game(maze);
+        return new GameRunner(game);
+    }
 
     @Test
     public void determineNewPositionNorth() {
@@ -106,6 +113,21 @@ public class GameRunnerTest {
 
         assertEquals("The new position is not what was expected", 19, newPosition.getX());
         assertEquals("The new position is not what was expected", 5, newPosition.getY());
+    }
+
+    @Test
+    public void determineNewPositionWallCollision() {
+        boolean[][] walls = new boolean[][] {
+            {true, true, true},
+            {true, false, true},
+            {true, true, true}
+        };
+        GameRunner runner = runnerWithWalls(walls);
+        Position position = new Position(1, 1);
+        Position newPosition = runner.determineNewPosition(position, Direction.WEST);
+
+        assertEquals("The new position should be the same as the old position", position.getX(), newPosition.getX());
+        assertEquals("The new position should be the same as the old position", position.getY(), newPosition.getY());
     }
 
     @Test
