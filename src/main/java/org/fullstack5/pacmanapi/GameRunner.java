@@ -46,6 +46,7 @@ public final class GameRunner {
     public final GameState getState() {
         return new GameState(
                 game.getTime(),
+                State.IN_PROGRESS,
                 game.getRemainingPacdots(),
                 game.getRemainingPellets(),
                 game.getPacman(),

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.fullstack5.pacmanapi.models.Piece;
 import org.fullstack5.pacmanapi.models.Position;
+import org.fullstack5.pacmanapi.models.State;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public final class GameState {
     private final long time;
+    private final State state;
     private final List<Position> remainingDots;
     private final List<Position> remainingPellets;
     private final Piece pacman;
