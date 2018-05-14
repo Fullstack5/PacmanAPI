@@ -31,7 +31,7 @@ public class GameRunnerTest {
 
 
     @Test
-    public void newPositionNorth() {
+    public void determineNewPositionNorth() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
         Position newPosition = runner.determineNewPosition(position, Direction.NORTH);
@@ -44,7 +44,7 @@ public class GameRunnerTest {
     }
 
     @Test
-    public void newPositionSouth() {
+    public void determineNewPositionSouth() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
         Position newPosition = runner.determineNewPosition(position, Direction.SOUTH);
@@ -57,7 +57,7 @@ public class GameRunnerTest {
     }
 
     @Test
-    public void newPositionWest() {
+    public void determineNewPositionWest() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
         Position newPosition = runner.determineNewPosition(position, Direction.WEST);
@@ -70,7 +70,7 @@ public class GameRunnerTest {
     }
 
     @Test
-    public void newPositionEast() {
+    public void determineNewPositionEast() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
         Position newPosition = runner.determineNewPosition(position, Direction.EAST);
@@ -83,7 +83,7 @@ public class GameRunnerTest {
     }
 
     @Test
-    public void newPositionLoopsY() {
+    public void determineNewPositionLoopsY() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 19);
         Position newPosition = runner.determineNewPosition(position, Direction.SOUTH);
@@ -96,7 +96,7 @@ public class GameRunnerTest {
     }
 
     @Test
-    public void newPositionLoopsX() {
+    public void determineNewPositionLoopsX() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(0, 5);
         Position newPosition = runner.determineNewPosition(position, Direction.WEST);

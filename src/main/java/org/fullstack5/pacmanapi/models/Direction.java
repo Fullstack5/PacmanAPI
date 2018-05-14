@@ -13,13 +13,13 @@ public enum Direction {
     WEST(180, -1, 0);
 
     private final int angle;
-    private final int xInc;
-    private final int yInc;
+    private final int deltaX;
+    private final int deltaY;
 
-    private Direction(final int angle, final int xInc, final int yInc) {
+    Direction(final int angle, final int deltaX, final int deltaY) {
         this.angle = angle;
-        this.xInc = xInc;
-        this.yInc = yInc;
+        this.deltaX = deltaX;
+        this.deltaY = deltaY;
     }
 
     public static Direction random() {

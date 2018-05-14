@@ -82,12 +82,16 @@ public final class GameRunner {
             return position;
         }
         final Maze maze = game.getMaze();
-        return new Position(
-                wrapAround(position.getX() + direction.getXInc(), 0, maze.getWidth() - 1),
-                wrapAround(position.getY() + direction.getYInc(), 0, maze.getHeight() - 1));
+        int x = boundedMove(position.getX(), direction.getDeltaX(), maze.getWidth());
+        int y = boundedMove(position.getY(), direction.getDeltaY(), maze.getHeight());
+        return new Position(x, y);
     }
 
-    private int wrapAround(final int value, final int min, final int max) {
-        return value < min ? max : value > max ? min : value;
+    private int boundedMove(int position, int delta, int upperBound) {
+        int result = (position + delta) % upperBound;
+        if (result < 0) {
+            result += upperBound;
+        }
+        return result;
     }
 }

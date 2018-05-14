@@ -80,7 +80,7 @@ public final class PacmanGui {
                 if (renderProgress >= 10) {
                     renderProgress = 0;
                     final Piece pacman = state.getPacman();
-                    pacman.setPosition(new Position(pacman.getPosition().getX() + pacman.getDirection().getXInc(), pacman.getPosition().getY() + pacman.getDirection().getYInc()));
+                    pacman.setPosition(new Position(pacman.getPosition().getX() + pacman.getDirection().getDeltaX(), pacman.getPosition().getY() + pacman.getDirection().getDeltaY()));
                     pacman.setDirection(Direction.random());
                 }
                 frame.repaint();
@@ -113,8 +113,8 @@ public final class PacmanGui {
             g.setColor(Color.yellow);
             final int startAngle = pacman.getDirection().getAngle();
             g.fillArc(
-                    GRID_WIDTH * pacman.getPosition().getX() + GRID_WIDTH * renderProgress * pacman.getDirection().getXInc() / FRAMES_PER_TICK,
-                    GRID_WIDTH * pacman.getPosition().getY() + GRID_WIDTH * renderProgress * pacman.getDirection().getYInc() / FRAMES_PER_TICK,
+                    GRID_WIDTH * pacman.getPosition().getX() + GRID_WIDTH * renderProgress * pacman.getDirection().getDeltaX() / FRAMES_PER_TICK,
+                    GRID_WIDTH * pacman.getPosition().getY() + GRID_WIDTH * renderProgress * pacman.getDirection().getDeltaY() / FRAMES_PER_TICK,
                     GRID_WIDTH - 1, GRID_WIDTH - 1, startAngle + 45 - animProgress * 9, 270 + animProgress * 18);
 
             g.setColor(Color.black);
