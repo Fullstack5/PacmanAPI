@@ -57,9 +57,10 @@ public class GameServiceImpl implements GameService {
         // generate new random authId
         String authId = AuthenticationToken.create();
 
-        games.get(gameId).setPlayerAuthId(authId, type);
+        GameRunner runner = games.get(gameId);
+        runner.setPlayerAuthId(authId, type);
 
-        return new PlayerRegistered(authId);
+        return new PlayerRegistered(authId, runner.getMaze());
     }
 
     @Override
@@ -67,6 +68,4 @@ public class GameServiceImpl implements GameService {
         GameRunner runner = games.get(gameId);
         runner.setDirection(direction, type);
     }
-
-
 }

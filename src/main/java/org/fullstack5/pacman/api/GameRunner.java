@@ -33,6 +33,10 @@ public final class GameRunner {
         new PacmanGui(gameId, game.getMaze()).initialize(flux);
     }
 
+    public Maze getMaze() {
+        return game.getMaze();
+    }
+
     public void setPlayerAuthId(String authId, PlayerType type) {
         switch(type) {
             case PACMAN:
