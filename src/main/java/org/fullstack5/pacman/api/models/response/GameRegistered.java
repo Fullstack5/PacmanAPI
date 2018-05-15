@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GameRegistered {
+public final class GameRegistered {
     private String gameId;
 }
