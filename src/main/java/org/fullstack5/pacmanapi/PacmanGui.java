@@ -37,7 +37,7 @@ public final class PacmanGui {
         flux.subscribe(state -> {
             this.state = state;
             renderProgress = 0;
-            System.out.println("Updated state");
+//            System.out.println("Updated state");
         });
 
         final JFrame frame = new JFrame();
@@ -67,7 +67,7 @@ public final class PacmanGui {
         public void run() {
             while (true) {
                 renderProgress++;
-                System.out.println("Repaint");
+//                System.out.println("Repaint");
                 frame.repaint();
                 try {
                     Thread.sleep(MS_PER_FRAME);
