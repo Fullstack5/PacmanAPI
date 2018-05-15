@@ -14,6 +14,7 @@ public class PacmanApiController {
     @Autowired
     GameService service;
 
+    @CrossOrigin
     @PostMapping(path = "/current-state", produces = "application/stream+json")
     public Flux<GameState> getCurrentState(
             @RequestBody StateRequest request) {
