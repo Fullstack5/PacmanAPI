@@ -12,8 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Polygon;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 /**
  * GUI for a pacman game.
@@ -31,30 +33,21 @@ public final class PacmanGui {
 
     private int renderProgress = 0;
 
-    public static void main(final String... args) {
-//        boolean[][] grid = new boolean[][]{
-//                {true, true, true, true, true},
-//                {true, false, false, false, true},
-//                {true, true, false, true, true},
-//                {true, false, false, false, true},
-//                {true, true, true, true, true}
-//        };
-//        new PacmanGui().initialize();
-    }
-
     public PacmanGui(final Maze maze) {
         this.maze = maze;
     }
 
     public final void initialize(final Flux<GameState> flux) {
-        flux.doOnEach(consumer -> {this.state = consumer.get();System.out.println("Updated state");});
-//        flux.any(state -> {this.state = state;System.out.println("Updated state");return true;});
+        flux.subscribe(state -> {
+            this.state = state;
+            renderProgress = 0;
+            System.out.println("Updated state");
+        });
 
         final JFrame frame = new JFrame();
         final JPanel panel = new MyPanel();
         panel.setFocusable(true);
         panel.requestFocusInWindow();
-        panel.addKeyListener(new PacmanKeyListener());
         frame.add(panel);
         frame.pack();
         frame.setSize(maze.getWidth() * GRID_WIDTH + 16, maze.getHeight() * GRID_WIDTH + 38);
@@ -78,14 +71,7 @@ public final class PacmanGui {
         public void run() {
             while (true) {
                 renderProgress++;
-                if (renderProgress >= 10) {
-                    renderProgress = 0;
-                    if (state != null) {
-                        final Piece pacman = state.getPacman();
-                        pacman.setPosition(new Position(pacman.getPosition().getX() + pacman.getDirection().getDeltaX(), pacman.getPosition().getY() + pacman.getDirection().getDeltaY()));
-                        pacman.setDirection(Direction.random());
-                    }
-                }
+                System.out.println("Repaint");
                 frame.repaint();
                 try {
                     Thread.sleep(MS_PER_FRAME);
@@ -101,13 +87,27 @@ public final class PacmanGui {
         @Override
         protected void paintComponent(final Graphics g) {
             renderMaze(g);
-            renderPacman(g);
+            if (state != null) {
+                renderPacman(g);
+                renderGhost(g, state.getBlinky(), Color.RED);
+                renderGhost(g, state.getPinky(), Color.PINK);
+                renderGhost(g, state.getInky(), Color.CYAN);
+                renderGhost(g, state.getClyde(), Color.ORANGE);
+                renderDots(g, state.getRemainingDots(), 8);
+                renderDots(g, state.getRemainingPellets(), 2);
+            }
+        }
+
+        private void renderDots(final Graphics g, final List<Position> dots, final int size) { // size = 1/X of square
+            g.setColor(Color.yellow);
+            for (final Position dot : dots) {
+                g.fillOval(GRID_WIDTH * dot.getX() + GRID_WIDTH / 2 - GRID_WIDTH / size / 2,
+                        GRID_WIDTH * dot.getY() + GRID_WIDTH / 2 - GRID_WIDTH / size / 2,
+                        GRID_WIDTH / size, GRID_WIDTH / size);
+            }
         }
 
         private void renderPacman(final Graphics g) {
-            if (state == null) {
-                return;
-            }
             final Piece pacman = state.getPacman();
             int animProgress = (renderProgress + 5) % FRAMES_PER_TICK;
             if (animProgress > 6) {
@@ -116,12 +116,34 @@ public final class PacmanGui {
             g.setColor(Color.yellow);
             final int startAngle = pacman.getDirection().getAngle();
             g.fillArc(
-                    GRID_WIDTH * pacman.getPosition().getX() + GRID_WIDTH * renderProgress * pacman.getDirection().getDeltaX() / FRAMES_PER_TICK,
-                    GRID_WIDTH * pacman.getPosition().getY() + GRID_WIDTH * renderProgress * pacman.getDirection().getDeltaY() / FRAMES_PER_TICK,
+                    calcDrawX(pacman, renderProgress),
+                    calcDrawY(pacman, renderProgress),
                     GRID_WIDTH - 1, GRID_WIDTH - 1, startAngle + 45 - animProgress * 9, 270 + animProgress * 18);
 
-            g.setColor(Color.black);
-            g.drawString(String.format("X = %d; Y = %d; direction = %s; renderProgress = %d", pacman.getPosition().getX(), pacman.getPosition().getY(), pacman.getDirection().name(), renderProgress), 50, 250);
+//            g.setColor(Color.black);
+//            g.drawString(String.format("X = %d; Y = %d; direction = %s; renderProgress = %d", pacman.getPosition().getX(), pacman.getPosition().getY(), pacman.getDirection().name(), renderProgress), 50, 250);
+        }
+
+        private void renderGhost(final Graphics g, final Piece ghost, final Color color) {
+            g.setColor(ghost.isVulnerable() ? Color.BLUE : color);
+            final int drawX = calcDrawX(ghost, renderProgress);
+            final int drawY = calcDrawY(ghost, renderProgress);
+            g.fillArc(drawX, drawY, GRID_WIDTH - 1, (GRID_WIDTH ) - 1, 0, 180);
+            final int[] x = new int[] {drawX, drawX, drawX + GRID_WIDTH / 4, drawX + GRID_WIDTH / 2, drawX + GRID_WIDTH * 3 / 4, drawX + GRID_WIDTH, drawX + GRID_WIDTH};
+            final int legsTop = drawY + GRID_WIDTH * 3 / 4;
+            final int legsBottom = drawY + GRID_WIDTH - 1;
+            final int[] y = new int[] {drawY + GRID_WIDTH / 2, legsBottom, legsTop, legsBottom, legsTop, legsBottom, drawY + GRID_WIDTH / 2};
+            g.fillPolygon(x, y, x.length);
+            g.setColor(Color.WHITE);
+            g.fillOval(drawX + GRID_WIDTH / 8, drawY + GRID_WIDTH / 8, GRID_WIDTH / 4, GRID_WIDTH / 4);
+            g.fillOval(drawX + GRID_WIDTH * 5 / 8, drawY + GRID_WIDTH / 8, GRID_WIDTH / 4, GRID_WIDTH / 4);
+            if (!ghost.isVulnerable()) {
+                g.setColor(Color.BLACK);
+                g.drawOval(drawX + GRID_WIDTH / 8, drawY + GRID_WIDTH / 8, GRID_WIDTH / 4, GRID_WIDTH / 4);
+                g.fillOval(drawX + GRID_WIDTH / 8 + (ghost.getDirection().getDeltaX() + 1) * GRID_WIDTH / 16, drawY + GRID_WIDTH / 8 + (ghost.getDirection().getDeltaY() + 1) * GRID_WIDTH / 16, GRID_WIDTH / 8, GRID_WIDTH / 8);
+                g.drawOval(drawX + GRID_WIDTH * 5 / 8, drawY + GRID_WIDTH / 8, GRID_WIDTH / 4, GRID_WIDTH / 4);
+                g.fillOval(drawX + GRID_WIDTH * 5 / 8 + (ghost.getDirection().getDeltaX() + 1) * GRID_WIDTH / 16, drawY + GRID_WIDTH / 8 + (ghost.getDirection().getDeltaY() + 1) * GRID_WIDTH / 16, GRID_WIDTH / 8, GRID_WIDTH / 8);
+            }
         }
 
         private void renderMaze(final Graphics g) {
@@ -140,28 +162,11 @@ public final class PacmanGui {
         }
     }
 
-    private class PacmanKeyListener extends KeyAdapter {
+    private static int calcDrawX(final Piece piece, final int renderProgress) {
+        return GRID_WIDTH * piece.getPosition().getX() + GRID_WIDTH * renderProgress * piece.getDirection().getDeltaX() / FRAMES_PER_TICK;
+    }
 
-        @Override
-        public final void keyPressed(final KeyEvent e) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_LEFT: {
-                    state.getPacman().setDirection(Direction.WEST);
-                    break;
-                }
-                case KeyEvent.VK_RIGHT: {
-                    state.getPacman().setDirection(Direction.EAST);
-                    break;
-                }
-                case KeyEvent.VK_UP: {
-                    state.getPacman().setDirection(Direction.NORTH);
-                    break;
-                }
-                case KeyEvent.VK_DOWN: {
-                    state.getPacman().setDirection(Direction.SOUTH);
-                    break;
-                }
-            }
-        }
+    private static int calcDrawY(final Piece piece, final int renderProgress) {
+        return GRID_WIDTH * piece.getPosition().getY() + GRID_WIDTH * renderProgress * piece.getDirection().getDeltaY() / FRAMES_PER_TICK;
     }
 }
