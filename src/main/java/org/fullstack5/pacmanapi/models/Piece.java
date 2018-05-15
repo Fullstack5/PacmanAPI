@@ -15,6 +15,7 @@ public final class Piece {
     }
 
     private final Type type;
+    private Position previousPosition;
     private Position position;
     private Direction direction;
     private boolean isVulnerable;
@@ -28,5 +29,10 @@ public final class Piece {
         this.position = position;
         this.direction = direction;
         this.isVulnerable = false;
+    }
+
+    public void setPosition(Position position) {
+        this.previousPosition = this.position;
+        this.position = position;
     }
 }
