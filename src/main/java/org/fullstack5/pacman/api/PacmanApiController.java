@@ -1,9 +1,11 @@
 package org.fullstack5.pacman.api;
 
-import org.fullstack5.pacman.api.models.response.GameState;
 import org.fullstack5.pacman.api.models.request.MoveRequest;
+import org.fullstack5.pacman.api.models.request.RegisterPlayerRequest;
 import org.fullstack5.pacman.api.models.request.StateRequest;
 import org.fullstack5.pacman.api.models.response.GameRegistered;
+import org.fullstack5.pacman.api.models.response.GameState;
+import org.fullstack5.pacman.api.models.response.PlayerRegistered;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -24,7 +26,14 @@ public class PacmanApiController {
     @CrossOrigin
     @GetMapping(path = "/register-game")
     public GameRegistered registerGame() {
-        return service.register();
+        return service.registerGame();
+    }
+
+    @CrossOrigin
+    @PostMapping(path= "/register-player")
+    public PlayerRegistered registerPlayer(
+            @RequestBody RegisterPlayerRequest request) {
+        return service.registerPlayer(request.getGameId(), request.getType());
     }
 
     @CrossOrigin

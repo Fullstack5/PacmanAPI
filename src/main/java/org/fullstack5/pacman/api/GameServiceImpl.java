@@ -1,11 +1,9 @@
 package org.fullstack5.pacman.api;
 
-import org.fullstack5.pacman.api.models.Direction;
-import org.fullstack5.pacman.api.models.Game;
-import org.fullstack5.pacman.api.models.Piece;
+import org.fullstack5.pacman.api.models.*;
 import org.fullstack5.pacman.api.models.response.GameState;
-import org.fullstack5.pacman.api.models.Maze;
 import org.fullstack5.pacman.api.models.response.GameRegistered;
+import org.fullstack5.pacman.api.models.response.PlayerRegistered;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -28,7 +26,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public GameRegistered register() {
+    public GameRegistered registerGame() {
         // generate a non-conflicting gameId for the new game
         String gameId;
         do {
@@ -48,6 +46,11 @@ public class GameServiceImpl implements GameService {
         runner.start();
 
         return new GameRegistered(gameId);
+    }
+
+    @Override
+    public PlayerRegistered registerPlayer(String gameId, PlayerType type) {
+        return new PlayerRegistered("uuid"); // TODO: generate UUID and add it to the runner
     }
 
     @Override
