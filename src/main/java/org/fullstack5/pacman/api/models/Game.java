@@ -20,6 +20,7 @@ public final class Game {
     private final List<Position> remainingPacdots = new ArrayList<>();
     private final List<Position> remainingPellets = new ArrayList<>();
     private final List<Piece> pieces;
+    private final List<Piece> ghosts;
     private final Piece pacman;
     private final Piece blinky;
     private final Piece pinky;
@@ -35,22 +36,28 @@ public final class Game {
         remainingPellets.addAll(maze.getPowerPellets());
 
         final List<Piece> pieces = new ArrayList<>();
+        final List<Piece> ghosts = new ArrayList<>();
 
         pacman = new Piece(Piece.Type.PACMAN, maze.getPacmanSpawn());
         pieces.add(pacman);
 
         blinky = new Piece(Piece.Type.BLINKY, maze.getBlinkySpawn());
         pieces.add(blinky);
+        ghosts.add(blinky);
 
         pinky = new Piece(Piece.Type.PINKY, maze.getPinkySpawn());
         pieces.add(pinky);
+        ghosts.add(pinky);
 
         inky = new Piece(Piece.Type.INKY, maze.getInkySpawn());
         pieces.add(inky);
+        ghosts.add(inky);
 
         clyde = new Piece(Piece.Type.CLYDE, maze.getClydeSpawn());
         pieces.add(clyde);
+        ghosts.add(clyde);
 
         this.pieces = Collections.unmodifiableList(pieces);
+        this.ghosts = Collections.unmodifiableList(ghosts);
     }
 }

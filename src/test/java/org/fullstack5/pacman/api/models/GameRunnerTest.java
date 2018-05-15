@@ -24,7 +24,14 @@ public class GameRunnerTest {
         boolean[][] noWalls = new boolean[width][height];
         List<Position> noDots = Collections.emptyList();
         List<Position> noPowerPellets = Collections.emptyList();
-        Maze maze = new Maze(noWalls, noDots, noPowerPellets, pacmanSpawn, blinkySpawn, null, null, null);
+        Position root = new Position(0, 0);
+        if (pacmanSpawn == null) {
+            pacmanSpawn = root;
+        }
+        if (blinkySpawn == null) {
+            blinkySpawn = root;
+        }
+        Maze maze = new Maze(noWalls, noDots, noPowerPellets, pacmanSpawn, blinkySpawn, root, root, root);
         Game game = new Game(maze);
         return new GameRunner(game);
     }
@@ -32,7 +39,8 @@ public class GameRunnerTest {
     private GameRunner runnerWithWalls(boolean[][] walls) {
         List<Position> noDots = Collections.emptyList();
         List<Position> noPowerPellets = Collections.emptyList();
-        Maze maze = new Maze(walls, noDots, noPowerPellets, null, null, null, null, null);
+        Position root = new Position(0, 0);
+        Maze maze = new Maze(walls, noDots, noPowerPellets, root, root, root, root, root);
         Game game = new Game(maze);
         return new GameRunner(game);
     }

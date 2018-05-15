@@ -45,6 +45,15 @@ public final class GameRunner {
         game.getPieces().forEach(piece ->
                 piece.setPosition(determineNewPosition(piece.getPosition(), piece.getDirection()))
         );
+
+        Piece pacman = game.getPacman();
+        // detect ghost collisions
+        if (game.getGhosts().stream()
+                .anyMatch(ghost -> collided(pacman, ghost))) {
+            game.setState(State.PACMAN_LOST);
+            flux.connect().dispose();
+        }
+
         return createState();
     }
 
