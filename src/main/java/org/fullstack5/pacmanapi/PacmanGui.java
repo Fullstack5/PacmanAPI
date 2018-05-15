@@ -1,6 +1,5 @@
 package org.fullstack5.pacmanapi;
 
-import org.fullstack5.pacmanapi.models.Direction;
 import org.fullstack5.pacmanapi.models.Maze;
 import org.fullstack5.pacmanapi.models.Piece;
 import org.fullstack5.pacmanapi.models.Position;
@@ -12,9 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Polygon;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.List;
 
 /**
@@ -41,7 +37,7 @@ public final class PacmanGui {
         flux.subscribe(state -> {
             this.state = state;
             renderProgress = 0;
-            System.out.println("Updated state");
+//            System.out.println("Updated state");
         });
 
         final JFrame frame = new JFrame();
@@ -71,7 +67,7 @@ public final class PacmanGui {
         public void run() {
             while (true) {
                 renderProgress++;
-                System.out.println("Repaint");
+//                System.out.println("Repaint");
                 frame.repaint();
                 try {
                     Thread.sleep(MS_PER_FRAME);
