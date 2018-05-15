@@ -31,24 +31,12 @@ public final class PacmanGui {
 
     private int renderProgress = 0;
 
-    public static void main(final String... args) {
-//        boolean[][] grid = new boolean[][]{
-//                {true, true, true, true, true},
-//                {true, false, false, false, true},
-//                {true, true, false, true, true},
-//                {true, false, false, false, true},
-//                {true, true, true, true, true}
-//        };
-//        new PacmanGui().initialize();
-    }
-
     public PacmanGui(final Maze maze) {
         this.maze = maze;
     }
 
     public final void initialize(final Flux<GameState> flux) {
-        flux.doOnEach(consumer -> {this.state = consumer.get();System.out.println("Updated state");});
-//        flux.any(state -> {this.state = state;System.out.println("Updated state");return true;});
+        flux.subscribe(gameState -> {this.state = gameState;System.out.println("Updated state");});
 
         final JFrame frame = new JFrame();
         final JPanel panel = new MyPanel();
@@ -86,6 +74,7 @@ public final class PacmanGui {
                         pacman.setDirection(Direction.random());
                     }
                 }
+                System.out.println("Repaint");
                 frame.repaint();
                 try {
                     Thread.sleep(MS_PER_FRAME);
@@ -102,6 +91,12 @@ public final class PacmanGui {
         protected void paintComponent(final Graphics g) {
             renderMaze(g);
             renderPacman(g);
+            if (state != null) {
+                renderGhost(g, state.getBlinky(), Color.RED);
+                renderGhost(g, state.getPinky(), Color.PINK);
+                renderGhost(g, state.getInky(), Color.CYAN);
+                renderGhost(g, state.getClyde(), Color.ORANGE);
+            }
         }
 
         private void renderPacman(final Graphics g) {
@@ -116,12 +111,17 @@ public final class PacmanGui {
             g.setColor(Color.yellow);
             final int startAngle = pacman.getDirection().getAngle();
             g.fillArc(
-                    GRID_WIDTH * pacman.getPosition().getX() + GRID_WIDTH * renderProgress * pacman.getDirection().getDeltaX() / FRAMES_PER_TICK,
-                    GRID_WIDTH * pacman.getPosition().getY() + GRID_WIDTH * renderProgress * pacman.getDirection().getDeltaY() / FRAMES_PER_TICK,
+                    calcDrawX(pacman, renderProgress),
+                    calcDrawY(pacman, renderProgress),
                     GRID_WIDTH - 1, GRID_WIDTH - 1, startAngle + 45 - animProgress * 9, 270 + animProgress * 18);
 
             g.setColor(Color.black);
             g.drawString(String.format("X = %d; Y = %d; direction = %s; renderProgress = %d", pacman.getPosition().getX(), pacman.getPosition().getY(), pacman.getDirection().name(), renderProgress), 50, 250);
+        }
+
+        private void renderGhost(final Graphics g, final Piece ghost, final Color color) {
+            g.setColor(color);
+            g.fillArc(calcDrawX(ghost, renderProgress), calcDrawY(ghost, renderProgress), GRID_WIDTH - 1, GRID_WIDTH - 1, 0, 180);
         }
 
         private void renderMaze(final Graphics g) {
@@ -140,27 +140,35 @@ public final class PacmanGui {
         }
     }
 
+    private static int calcDrawX(final Piece piece, final int renderProgress) {
+        return GRID_WIDTH * piece.getPosition().getX() + GRID_WIDTH * renderProgress * piece.getDirection().getDeltaX() / FRAMES_PER_TICK;
+    }
+
+    private static int calcDrawY(final Piece piece, final int renderProgress) {
+        return GRID_WIDTH * piece.getPosition().getY() + GRID_WIDTH * renderProgress * piece.getDirection().getDeltaY() / FRAMES_PER_TICK;
+    }
+
     private class PacmanKeyListener extends KeyAdapter {
 
         @Override
         public final void keyPressed(final KeyEvent e) {
             switch (e.getKeyCode()) {
-                case KeyEvent.VK_LEFT: {
-                    state.getPacman().setDirection(Direction.WEST);
-                    break;
-                }
-                case KeyEvent.VK_RIGHT: {
-                    state.getPacman().setDirection(Direction.EAST);
-                    break;
-                }
-                case KeyEvent.VK_UP: {
-                    state.getPacman().setDirection(Direction.NORTH);
-                    break;
-                }
-                case KeyEvent.VK_DOWN: {
-                    state.getPacman().setDirection(Direction.SOUTH);
-                    break;
-                }
+            case KeyEvent.VK_LEFT: {
+                state.getPacman().setDirection(Direction.WEST);
+                break;
+            }
+            case KeyEvent.VK_RIGHT: {
+                state.getPacman().setDirection(Direction.EAST);
+                break;
+            }
+            case KeyEvent.VK_UP: {
+                state.getPacman().setDirection(Direction.NORTH);
+                break;
+            }
+            case KeyEvent.VK_DOWN: {
+                state.getPacman().setDirection(Direction.SOUTH);
+                break;
+            }
             }
         }
     }
