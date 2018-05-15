@@ -91,7 +91,7 @@ public final class GameRunner {
         return new Position(x, y);
     }
 
-    private int boundedMove(int position, int delta, int upperBound) {
+    public int boundedMove(int position, int delta, int upperBound) {
         int result = (position + delta) % upperBound;
         if (result < 0) {
             result += upperBound;

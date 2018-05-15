@@ -148,4 +148,20 @@ public class GameRunnerTest {
         assertEquals("Pacman should have moved in the Y direction", 9, state.getPacman().getPosition().getY());
         assertEquals("Time should have moved forward", 2, state.getTime());
     }
+
+    @Test
+    public void boundedMoveUpperBound() {
+        GameRunner runner = runnerWithEmptyMaze(20,20);
+        int result = runner.boundedMove(19, 1, 20);
+
+        assertEquals("Should roll over", 0, result);
+    }
+
+    @Test
+    public void boundedMoveLowerBound() {
+        GameRunner runner = runnerWithEmptyMaze(20,20);
+        int result = runner.boundedMove(0, -1, 20);
+
+        assertEquals("Should roll over", 19, result);
+    }
 }
