@@ -160,10 +160,16 @@ public final class PacmanGui {
     }
 
     private static int calcDrawX(final MovingPiece piece, final int renderProgress) {
+        if (piece.getOldPosition().equals(piece.getCurrentPosition())) {
+            return GRID_WIDTH * piece.getOldPosition().getX();
+        }
         return GRID_WIDTH * piece.getOldPosition().getX() + GRID_WIDTH * renderProgress * piece.getDirection().getDeltaX() / FRAMES_PER_TICK;
     }
 
     private static int calcDrawY(final MovingPiece piece, final int renderProgress) {
+        if (piece.getOldPosition().equals(piece.getCurrentPosition())) {
+            return GRID_WIDTH * piece.getOldPosition().getY();
+        }
         return GRID_WIDTH * piece.getOldPosition().getY() + GRID_WIDTH * renderProgress * piece.getDirection().getDeltaY() / FRAMES_PER_TICK;
     }
 }
