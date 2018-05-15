@@ -8,7 +8,6 @@ import org.fullstack5.pacman.api.models.Piece;
 import org.fullstack5.pacman.api.models.Position;
 import org.fullstack5.pacman.api.models.State;
 import org.fullstack5.pacman.api.models.response.GameState;
-import org.fullstack5.pacmanapi.models.*;
 import org.fullstack5.pacman.api.models.response.MovingPiece;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
@@ -67,7 +66,8 @@ public final class GameRunner {
         return new MovingPiece(
                 piece.getPreviousPosition(),
                 piece.getPosition(),
-                piece.getDirection()
+                piece.getDirection(),
+                piece.isVulnerable()
         );
     }
 

@@ -14,4 +14,5 @@ public class MovingPiece {
     final Position oldPosition;
     final Position currentPosition;
     final Direction direction;
+    final boolean vulnerable;
 }
