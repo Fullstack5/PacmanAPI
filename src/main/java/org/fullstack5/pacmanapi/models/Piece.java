@@ -20,7 +20,6 @@ public final class Piece {
     private Direction direction;
 
     public Piece(final Type type, final Position position) {
-        this.type = type;
-        this.position = position;
+        this(type, position, Direction.WEST);
     }
 }
