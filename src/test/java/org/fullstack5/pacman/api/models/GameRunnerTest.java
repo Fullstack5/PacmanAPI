@@ -1,7 +1,7 @@
-package org.fullstack5.pacmanapi.models;
+package org.fullstack5.pacman.api.models;
 
-import org.fullstack5.pacmanapi.GameRunner;
-import org.fullstack5.pacmanapi.models.response.GameState;
+import org.fullstack5.pacman.api.GameRunner;
+import org.fullstack5.pacman.api.models.response.GameState;
 import org.junit.Test;
 
 import java.util.Collections;

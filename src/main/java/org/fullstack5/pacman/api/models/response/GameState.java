@@ -1,9 +1,9 @@
-package org.fullstack5.pacmanapi.models.response;
+package org.fullstack5.pacman.api.models.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.fullstack5.pacmanapi.models.Position;
-import org.fullstack5.pacmanapi.models.State;
+import org.fullstack5.pacman.api.models.Position;
+import org.fullstack5.pacman.api.models.State;
 
 import java.util.List;
 

@@ -1,11 +1,11 @@
-package org.fullstack5.pacmanapi;
+package org.fullstack5.pacman.api;
 
-import org.fullstack5.pacmanapi.models.Direction;
-import org.fullstack5.pacmanapi.models.Game;
-import org.fullstack5.pacmanapi.models.Maze;
-import org.fullstack5.pacmanapi.models.Piece;
-import org.fullstack5.pacmanapi.models.response.GameRegistered;
-import org.fullstack5.pacmanapi.models.response.GameState;
+import org.fullstack5.pacman.api.models.Direction;
+import org.fullstack5.pacman.api.models.Game;
+import org.fullstack5.pacman.api.models.Piece;
+import org.fullstack5.pacman.api.models.response.GameState;
+import org.fullstack5.pacman.api.models.Maze;
+import org.fullstack5.pacman.api.models.response.GameRegistered;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 

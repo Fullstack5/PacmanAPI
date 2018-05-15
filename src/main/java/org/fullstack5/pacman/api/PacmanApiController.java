@@ -1,9 +1,9 @@
-package org.fullstack5.pacmanapi;
+package org.fullstack5.pacman.api;
 
-import org.fullstack5.pacmanapi.models.request.MoveRequest;
-import org.fullstack5.pacmanapi.models.request.StateRequest;
-import org.fullstack5.pacmanapi.models.response.GameRegistered;
-import org.fullstack5.pacmanapi.models.response.GameState;
+import org.fullstack5.pacman.api.models.response.GameState;
+import org.fullstack5.pacman.api.models.request.MoveRequest;
+import org.fullstack5.pacman.api.models.request.StateRequest;
+import org.fullstack5.pacman.api.models.response.GameRegistered;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;

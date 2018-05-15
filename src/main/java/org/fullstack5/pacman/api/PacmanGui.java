@@ -1,9 +1,9 @@
-package org.fullstack5.pacmanapi;
+package org.fullstack5.pacman.api;
 
-import org.fullstack5.pacmanapi.models.Maze;
-import org.fullstack5.pacmanapi.models.Piece;
-import org.fullstack5.pacmanapi.models.Position;
-import org.fullstack5.pacmanapi.models.response.GameState;
+import org.fullstack5.pacman.api.models.Piece;
+import org.fullstack5.pacman.api.models.response.GameState;
+import org.fullstack5.pacman.api.models.Maze;
+import org.fullstack5.pacman.api.models.Position;
 import reactor.core.publisher.Flux;
 
 import javax.swing.JFrame;

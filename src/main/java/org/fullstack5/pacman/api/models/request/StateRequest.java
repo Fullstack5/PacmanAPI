@@ -1,4 +1,4 @@
-package org.fullstack5.pacmanapi.models.request;
+package org.fullstack5.pacman.api.models.request;
 
 import lombok.Getter;
 import lombok.Setter;

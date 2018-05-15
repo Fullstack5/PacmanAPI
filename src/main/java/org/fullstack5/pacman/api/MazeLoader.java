@@ -1,7 +1,7 @@
-package org.fullstack5.pacmanapi;
+package org.fullstack5.pacman.api;
 
-import org.fullstack5.pacmanapi.models.Maze;
-import org.fullstack5.pacmanapi.models.Position;
+import org.fullstack5.pacman.api.models.Maze;
+import org.fullstack5.pacman.api.models.Position;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;

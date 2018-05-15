@@ -1,9 +1,15 @@
-package org.fullstack5.pacmanapi;
+package org.fullstack5.pacman.api;
 
 import lombok.Getter;
+import org.fullstack5.pacman.api.models.Direction;
+import org.fullstack5.pacman.api.models.Game;
+import org.fullstack5.pacman.api.models.Maze;
+import org.fullstack5.pacman.api.models.Piece;
+import org.fullstack5.pacman.api.models.Position;
+import org.fullstack5.pacman.api.models.State;
+import org.fullstack5.pacman.api.models.response.GameState;
 import org.fullstack5.pacmanapi.models.*;
-import org.fullstack5.pacmanapi.models.response.GameState;
-import org.fullstack5.pacmanapi.models.response.MovingPiece;
+import org.fullstack5.pacman.api.models.response.MovingPiece;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 

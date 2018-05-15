@@ -1,4 +1,4 @@
-package org.fullstack5.pacmanapi.models.response;
+package org.fullstack5.pacman.api.models.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package org.fullstack5.pacmanapi;
+package org.fullstack5.pacman.api;
 
 import java.util.Random;
 

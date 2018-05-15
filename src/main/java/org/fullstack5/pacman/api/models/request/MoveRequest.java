@@ -1,9 +1,9 @@
-package org.fullstack5.pacmanapi.models.request;
+package org.fullstack5.pacman.api.models.request;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.fullstack5.pacmanapi.models.Direction;
-import org.fullstack5.pacmanapi.models.Piece;
+import org.fullstack5.pacman.api.models.Piece;
+import org.fullstack5.pacman.api.models.Direction;
 
 @Getter
 @Setter
