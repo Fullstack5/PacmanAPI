@@ -2,12 +2,14 @@ package org.fullstack5.pacman.api.models.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * Immutable game registered response
  */
 @Getter
 @AllArgsConstructor
-public class GameRegistered {
-    private final String gameId;
+@NoArgsConstructor
+public final class GameRegistered {
+    private String gameId;
 }

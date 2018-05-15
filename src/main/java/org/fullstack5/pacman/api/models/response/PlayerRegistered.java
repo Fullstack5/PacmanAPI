@@ -2,6 +2,7 @@ package org.fullstack5.pacman.api.models.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.fullstack5.pacman.api.models.Maze;
 
 /**
@@ -9,7 +10,8 @@ import org.fullstack5.pacman.api.models.Maze;
  */
 @Getter
 @AllArgsConstructor
-public class PlayerRegistered {
-    private final String authId;
-    private final Maze maze;
+@NoArgsConstructor
+public final class PlayerRegistered {
+    private String authId;
+    private Maze maze;
 }
