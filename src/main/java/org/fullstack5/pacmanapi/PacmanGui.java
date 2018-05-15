@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Polygon;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -36,7 +37,11 @@ public final class PacmanGui {
     }
 
     public final void initialize(final Flux<GameState> flux) {
-        flux.subscribe(gameState -> {this.state = gameState;System.out.println("Updated state");});
+        flux.subscribe(state -> {
+            this.state = state;
+            renderProgress = 0;
+            System.out.println("Updated state");
+        });
 
         final JFrame frame = new JFrame();
         final JPanel panel = new MyPanel();
@@ -65,14 +70,6 @@ public final class PacmanGui {
         public void run() {
             while (true) {
                 renderProgress++;
-                if (renderProgress >= 10) {
-                    renderProgress = 0;
-                    if (state != null) {
-                        final Piece pacman = state.getPacman();
-                        pacman.setPosition(new Position(pacman.getPosition().getX() + pacman.getDirection().getDeltaX(), pacman.getPosition().getY() + pacman.getDirection().getDeltaY()));
-                        pacman.setDirection(Direction.random());
-                    }
-                }
                 System.out.println("Repaint");
                 frame.repaint();
                 try {
@@ -114,13 +111,28 @@ public final class PacmanGui {
                     calcDrawY(pacman, renderProgress),
                     GRID_WIDTH - 1, GRID_WIDTH - 1, startAngle + 45 - animProgress * 9, 270 + animProgress * 18);
 
-            g.setColor(Color.black);
-            g.drawString(String.format("X = %d; Y = %d; direction = %s; renderProgress = %d", pacman.getPosition().getX(), pacman.getPosition().getY(), pacman.getDirection().name(), renderProgress), 50, 250);
+//            g.setColor(Color.black);
+//            g.drawString(String.format("X = %d; Y = %d; direction = %s; renderProgress = %d", pacman.getPosition().getX(), pacman.getPosition().getY(), pacman.getDirection().name(), renderProgress), 50, 250);
         }
 
         private void renderGhost(final Graphics g, final Piece ghost, final Color color) {
             g.setColor(color);
-            g.fillArc(calcDrawX(ghost, renderProgress), calcDrawY(ghost, renderProgress), GRID_WIDTH - 1, GRID_WIDTH - 1, 0, 180);
+            final int drawX = calcDrawX(ghost, renderProgress);
+            final int drawY = calcDrawY(ghost, renderProgress);
+            g.fillArc(drawX, drawY, GRID_WIDTH - 1, (GRID_WIDTH ) - 1, 0, 180);
+            final int[] x = new int[] {drawX, drawX, drawX + GRID_WIDTH / 4, drawX + GRID_WIDTH / 2, drawX + GRID_WIDTH * 3 / 4, drawX + GRID_WIDTH, drawX + GRID_WIDTH};
+            final int legsTop = drawY + GRID_WIDTH * 3 / 4;
+            final int legsBottom = drawY + GRID_WIDTH - 1;
+            final int[] y = new int[] {drawY + GRID_WIDTH / 2, legsBottom, legsTop, legsBottom, legsTop, legsBottom, drawY + GRID_WIDTH / 2};
+            g.fillPolygon(x, y, x.length);
+            g.setColor(Color.WHITE);
+            g.fillOval(drawX + GRID_WIDTH / 8, drawY + GRID_WIDTH / 8, GRID_WIDTH / 4, GRID_WIDTH / 4);
+            g.fillOval(drawX + GRID_WIDTH * 5 / 8, drawY + GRID_WIDTH / 8, GRID_WIDTH / 4, GRID_WIDTH / 4);
+            g.setColor(Color.BLACK);
+            g.drawOval(drawX + GRID_WIDTH / 8, drawY + GRID_WIDTH / 8, GRID_WIDTH / 4, GRID_WIDTH / 4);
+            g.fillOval(drawX + GRID_WIDTH / 8 + (ghost.getDirection().getDeltaX() + 1) * GRID_WIDTH / 16, drawY + GRID_WIDTH / 8 + (ghost.getDirection().getDeltaY() + 1) * GRID_WIDTH / 16, GRID_WIDTH / 8, GRID_WIDTH / 8);
+            g.drawOval(drawX + GRID_WIDTH * 5 / 8, drawY + GRID_WIDTH / 8, GRID_WIDTH / 4, GRID_WIDTH / 4);
+            g.fillOval(drawX + GRID_WIDTH * 5 / 8 + (ghost.getDirection().getDeltaX() + 1) * GRID_WIDTH / 16, drawY + GRID_WIDTH / 8 + (ghost.getDirection().getDeltaY() + 1) * GRID_WIDTH / 16, GRID_WIDTH / 8, GRID_WIDTH / 8);
         }
 
         private void renderMaze(final Graphics g) {
