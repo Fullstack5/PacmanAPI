@@ -15,6 +15,7 @@ import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 /**
  * GUI for a pacman game.
@@ -86,19 +87,27 @@ public final class PacmanGui {
         @Override
         protected void paintComponent(final Graphics g) {
             renderMaze(g);
-            renderPacman(g);
             if (state != null) {
+                renderPacman(g);
                 renderGhost(g, state.getBlinky(), Color.RED);
                 renderGhost(g, state.getPinky(), Color.PINK);
                 renderGhost(g, state.getInky(), Color.CYAN);
                 renderGhost(g, state.getClyde(), Color.ORANGE);
+                renderDots(g, state.getRemainingDots(), 8);
+                renderDots(g, state.getRemainingPellets(), 2);
+            }
+        }
+
+        private void renderDots(final Graphics g, final List<Position> dots, final int size) { // size = 1/X of square
+            g.setColor(Color.yellow);
+            for (final Position dot : dots) {
+                g.fillOval(GRID_WIDTH * dot.getX() + GRID_WIDTH / 2 - GRID_WIDTH / size / 2,
+                        GRID_WIDTH * dot.getY() + GRID_WIDTH / 2 - GRID_WIDTH / size / 2,
+                        GRID_WIDTH / size, GRID_WIDTH / size);
             }
         }
 
         private void renderPacman(final Graphics g) {
-            if (state == null) {
-                return;
-            }
             final Piece pacman = state.getPacman();
             int animProgress = (renderProgress + 5) % FRAMES_PER_TICK;
             if (animProgress > 6) {
