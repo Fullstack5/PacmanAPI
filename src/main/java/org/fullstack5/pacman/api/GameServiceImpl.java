@@ -21,8 +21,12 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Flux<GameState> getState(String gameId) {
-        return games.get(gameId).getFlux();
+    public final Flux<GameState> getState(final String gameId) {
+        final GameRunner game = games.get(gameId);
+        if (game == null) {
+            throw new IllegalArgumentException("No game with gameId " + gameId);
+        }
+        return game.getFlux();
     }
 
     @Override
