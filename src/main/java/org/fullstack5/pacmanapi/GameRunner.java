@@ -3,6 +3,7 @@ package org.fullstack5.pacmanapi;
 import lombok.Getter;
 import org.fullstack5.pacmanapi.models.*;
 import org.fullstack5.pacmanapi.models.response.GameState;
+import org.fullstack5.pacmanapi.models.response.MovingPiece;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 
@@ -48,11 +49,19 @@ public final class GameRunner {
                 State.IN_PROGRESS,
                 game.getRemainingPacdots(),
                 game.getRemainingPellets(),
-                game.getPacman(),
-                game.getBlinky(),
-                game.getPinky(),
-                game.getInky(),
-                game.getClyde()
+                createMovingPiece(game.getPacman()),
+                createMovingPiece(game.getBlinky()),
+                createMovingPiece(game.getPinky()),
+                createMovingPiece(game.getInky()),
+                createMovingPiece(game.getClyde())
+        );
+    }
+
+    public MovingPiece createMovingPiece(Piece piece) {
+        return new MovingPiece(
+                piece.getPreviousPosition(),
+                piece.getPosition(),
+                piece.getDirection()
         );
     }
 
