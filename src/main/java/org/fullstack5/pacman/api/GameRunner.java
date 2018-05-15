@@ -31,9 +31,9 @@ public final class GameRunner {
                 .publish();
     }
 
-    final void start() {
+    final void start(final String gameId) {
         flux.connect();
-        new PacmanGui(game.getMaze()).initialize(flux);
+        new PacmanGui(gameId, game.getMaze()).initialize(flux);
     }
 
     public final GameState performStep() {

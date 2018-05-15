@@ -24,13 +24,15 @@ public final class PacmanGui {
     private static final int FRAMES_PER_TICK = 10;
     private static final int MS_PER_FRAME = MS_PER_TICK / FRAMES_PER_TICK;
 
+    private final String gameId;
     private final Maze maze;
 
     private GameState state;
 
     private int renderProgress = 0;
 
-    public PacmanGui(final Maze maze) {
+    public PacmanGui(final String gameId, final Maze maze) {
+        this.gameId = gameId;
         this.maze = maze;
     }
 
@@ -50,7 +52,7 @@ public final class PacmanGui {
         frame.setSize(maze.getWidth() * GRID_WIDTH + 16, maze.getHeight() * GRID_WIDTH + 38);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setTitle("Chapter Fullstack 5 Pacman Simulator");
+        frame.setTitle("Chapter Fullstack 5 Pacman Simulator | PIN: " + gameId);
         frame.setVisible(true);
 
         new Thread(new GuiRunner(frame)).start();

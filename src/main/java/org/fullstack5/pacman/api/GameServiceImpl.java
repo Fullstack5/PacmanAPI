@@ -47,7 +47,7 @@ public class GameServiceImpl implements GameService {
 
         final GameRunner runner = new GameRunner(game);
         games.put(gameId, runner);
-        runner.start();
+        runner.start(gameId);
 
         return new GameRegistered(gameId);
     }
