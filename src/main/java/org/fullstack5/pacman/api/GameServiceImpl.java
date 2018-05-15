@@ -1,8 +1,8 @@
 package org.fullstack5.pacman.api;
 
 import org.fullstack5.pacman.api.models.*;
-import org.fullstack5.pacman.api.models.response.GameState;
 import org.fullstack5.pacman.api.models.response.GameRegistered;
+import org.fullstack5.pacman.api.models.response.GameState;
 import org.fullstack5.pacman.api.models.response.PlayerRegistered;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -50,7 +50,12 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public PlayerRegistered registerPlayer(String gameId, PlayerType type) {
-        return new PlayerRegistered("uuid"); // TODO: generate UUID and add it to the runner
+        // generate new random authId
+        String authId = AuthenticationToken.create();
+
+        games.get(gameId).setPlayerAuthId(authId, type);
+
+        return new PlayerRegistered(authId);
     }
 
     @Override

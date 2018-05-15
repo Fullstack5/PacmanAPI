@@ -1,12 +1,7 @@
 package org.fullstack5.pacman.api;
 
 import lombok.Getter;
-import org.fullstack5.pacman.api.models.Direction;
-import org.fullstack5.pacman.api.models.Game;
-import org.fullstack5.pacman.api.models.Maze;
-import org.fullstack5.pacman.api.models.Piece;
-import org.fullstack5.pacman.api.models.Position;
-import org.fullstack5.pacman.api.models.State;
+import org.fullstack5.pacman.api.models.*;
 import org.fullstack5.pacman.api.models.response.GameState;
 import org.fullstack5.pacman.api.models.response.MovingPiece;
 import reactor.core.publisher.ConnectableFlux;
@@ -20,6 +15,8 @@ import java.time.Duration;
 public final class GameRunner {
 
     private final Game game;
+    private String pacmanAuthId;
+    private String ghostsAuthId;
     @Getter
     private final ConnectableFlux<GameState> flux;
 
@@ -34,6 +31,24 @@ public final class GameRunner {
     final void start() {
         flux.connect();
         new PacmanGui(game.getMaze()).initialize(flux);
+    }
+
+    public void setPlayerAuthId(String authId, PlayerType type) {
+        switch(type) {
+            case PACMAN:
+                if (pacmanAuthId == null) {
+                    pacmanAuthId = authId;
+                } else {
+                    throw new IllegalArgumentException("Pacman player was already registered");
+                }
+                break;
+            case GHOSTS:
+                if (ghostsAuthId == null) {
+                    ghostsAuthId = authId;
+                } else {
+                    throw new IllegalArgumentException("Ghosts player was already registered");
+                }
+        }
     }
 
     public final GameState performStep() {
