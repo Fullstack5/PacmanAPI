@@ -42,7 +42,6 @@ public final class PacmanGui {
         final JPanel panel = new MyPanel();
         panel.setFocusable(true);
         panel.requestFocusInWindow();
-        panel.addKeyListener(new PacmanKeyListener());
         frame.add(panel);
         frame.pack();
         frame.setSize(maze.getWidth() * GRID_WIDTH + 16, maze.getHeight() * GRID_WIDTH + 38);
@@ -146,30 +145,5 @@ public final class PacmanGui {
 
     private static int calcDrawY(final Piece piece, final int renderProgress) {
         return GRID_WIDTH * piece.getPosition().getY() + GRID_WIDTH * renderProgress * piece.getDirection().getDeltaY() / FRAMES_PER_TICK;
-    }
-
-    private class PacmanKeyListener extends KeyAdapter {
-
-        @Override
-        public final void keyPressed(final KeyEvent e) {
-            switch (e.getKeyCode()) {
-            case KeyEvent.VK_LEFT: {
-                state.getPacman().setDirection(Direction.WEST);
-                break;
-            }
-            case KeyEvent.VK_RIGHT: {
-                state.getPacman().setDirection(Direction.EAST);
-                break;
-            }
-            case KeyEvent.VK_UP: {
-                state.getPacman().setDirection(Direction.NORTH);
-                break;
-            }
-            case KeyEvent.VK_DOWN: {
-                state.getPacman().setDirection(Direction.SOUTH);
-                break;
-            }
-            }
-        }
     }
 }
