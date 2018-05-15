@@ -131,22 +131,28 @@ public class GameRunnerTest {
     }
 
     @Test
-    public void stepPacmanMoves() {
+    public void performStepPacmanMoves() {
+        Position pacmanSpawn = new Position(10, 10);
+        GameRunner runner = runnerWithPacman(20, 20, pacmanSpawn);
+        runner.setDirection(Direction.NORTH, Piece.Type.PACMAN);
+        runner.performStep();
+
+        GameState state = runner.createState();
+        assertNotEquals("Pacman should have moved", pacmanSpawn, state.getPacman().getCurrentPosition());
+        assertEquals("Pacman should have moved in the Y direction", 9, state.getPacman().getCurrentPosition().getY());
+        assertEquals("Time should have moved forward", 1, state.getTime());
+    }
+
+    @Test
+    public void performStepPacmanMovesDefaultWest() {
         Position pacmanSpawn = new Position(10, 10);
         GameRunner runner = runnerWithPacman(20, 20, pacmanSpawn);
         runner.performStep();
 
         GameState state = runner.createState();
-        assertEquals("Pacman should not have moved", pacmanSpawn, state.getPacman().getCurrentPosition());
+        assertNotEquals("Pacman should have moved", pacmanSpawn, state.getPacman().getCurrentPosition());
+        assertEquals("Pacman should have moved in the X direction", 9, state.getPacman().getCurrentPosition().getX());
         assertEquals("Time should have moved forward", 1, state.getTime());
-
-        runner.setDirection(Direction.NORTH, Piece.Type.PACMAN);
-        runner.performStep();
-
-        state = runner.createState();
-        assertNotEquals("Pacman should have moved", pacmanSpawn, state.getPacman());
-        assertEquals("Pacman should have moved in the Y direction", 9, state.getPacman().getCurrentPosition().getY());
-        assertEquals("Time should have moved forward", 2, state.getTime());
     }
 
     @Test
