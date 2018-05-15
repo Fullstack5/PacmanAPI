@@ -8,6 +8,8 @@ import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A runner to execute the game rules and logic
@@ -15,8 +17,8 @@ import java.time.Duration;
 public final class GameRunner {
 
     private final Game game;
-    private String pacmanAuthId;
-    private String ghostsAuthId;
+    private Map<PlayerType, String> players;
+
     @Getter
     private final ConnectableFlux<GameState> flux;
 
@@ -26,6 +28,7 @@ public final class GameRunner {
                 .interval(Duration.ofSeconds(1))
                 .map(t -> this.performStep())
                 .publish();
+        this.players = new HashMap();
     }
 
     final void start(final String gameId) {
@@ -38,21 +41,10 @@ public final class GameRunner {
     }
 
     public void setPlayerAuthId(String authId, PlayerType type) {
-        switch(type) {
-            case PACMAN:
-                if (pacmanAuthId == null) {
-                    pacmanAuthId = authId;
-                } else {
-                    throw new IllegalArgumentException("Pacman player was already registered");
-                }
-                break;
-            case GHOSTS:
-                if (ghostsAuthId == null) {
-                    ghostsAuthId = authId;
-                } else {
-                    throw new IllegalArgumentException("Ghosts player was already registered");
-                }
+        if (players.containsKey(type)) {
+            throw new IllegalArgumentException("Player was already registered");
         }
+        players.put(type, authId);
     }
 
     public final GameState performStep() {
@@ -120,7 +112,15 @@ public final class GameRunner {
         );
     }
 
-    public final void setDirection(final Direction direction, final Piece.Type type) {
+    public final void setDirection(String authId, final Direction direction, final Piece.Type type) {
+        boolean authIdValid = players.entrySet().stream()
+                .filter(entry -> entry.getKey().controls(type))
+                .allMatch(entry -> entry.getValue().equals(authId));
+
+        if (!authIdValid) {
+            throw new IllegalArgumentException("authId is not correct");
+        }
+
         getPiece(type).setDirection(direction);
     }
 

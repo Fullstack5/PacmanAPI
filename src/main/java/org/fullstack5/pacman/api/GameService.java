@@ -12,5 +12,5 @@ public interface GameService {
     Flux<GameState> getState(String gameId);
     GameRegistered registerGame();
     PlayerRegistered registerPlayer(String gameId, PlayerType type);
-    void performMove(String gameId, Direction direction, Piece.Type type);
+    void performMove(String gameId, String authId, Direction direction, Piece.Type type);
 }

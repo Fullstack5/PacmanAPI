@@ -12,6 +12,7 @@ import org.fullstack5.pacman.api.models.Direction;
 @Setter
 public class MoveRequest {
     private String gameId;
+    private String authId;
     private Direction direction;
     private Piece.Type type;
 }

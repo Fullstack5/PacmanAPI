@@ -64,8 +64,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void performMove(String gameId, Direction direction, Piece.Type type) {
+    public void performMove(String gameId, String authId, Direction direction, Piece.Type type) {
         GameRunner runner = games.get(gameId);
-        runner.setDirection(direction, type);
+        runner.setDirection(authId, direction, type);
     }
 }

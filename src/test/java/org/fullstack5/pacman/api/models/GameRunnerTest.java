@@ -142,7 +142,7 @@ public class GameRunnerTest {
     public void performStepPacmanMoves() {
         Position pacmanSpawn = new Position(10, 10);
         GameRunner runner = runnerWithPacman(20, 20, pacmanSpawn);
-        runner.setDirection(Direction.NORTH, Piece.Type.PACMAN);
+        runner.setDirection(null, Direction.NORTH, Piece.Type.PACMAN);
         runner.performStep();
 
         GameState state = runner.createState();
