@@ -4,6 +4,7 @@ import org.fullstack5.pacman.api.models.Piece;
 import org.fullstack5.pacman.api.models.response.GameState;
 import org.fullstack5.pacman.api.models.Maze;
 import org.fullstack5.pacman.api.models.Position;
+import org.fullstack5.pacman.api.models.response.MovingPiece;
 import reactor.core.publisher.Flux;
 
 import javax.swing.JFrame;
@@ -104,7 +105,7 @@ public final class PacmanGui {
         }
 
         private void renderPacman(final Graphics g) {
-            final Piece pacman = state.getPacman();
+            final MovingPiece pacman = state.getPacman();
             int animProgress = (renderProgress + 5) % FRAMES_PER_TICK;
             if (animProgress > 6) {
                 animProgress = FRAMES_PER_TICK - animProgress;
@@ -120,7 +121,7 @@ public final class PacmanGui {
 //            g.drawString(String.format("X = %d; Y = %d; direction = %s; renderProgress = %d", pacman.getPosition().getX(), pacman.getPosition().getY(), pacman.getDirection().name(), renderProgress), 50, 250);
         }
 
-        private void renderGhost(final Graphics g, final Piece ghost, final Color color) {
+        private void renderGhost(final Graphics g, final MovingPiece ghost, final Color color) {
             g.setColor(ghost.isVulnerable() ? Color.BLUE : color);
             final int drawX = calcDrawX(ghost, renderProgress);
             final int drawY = calcDrawY(ghost, renderProgress);
@@ -158,11 +159,11 @@ public final class PacmanGui {
         }
     }
 
-    private static int calcDrawX(final Piece piece, final int renderProgress) {
-        return GRID_WIDTH * piece.getPosition().getX() + GRID_WIDTH * renderProgress * piece.getDirection().getDeltaX() / FRAMES_PER_TICK;
+    private static int calcDrawX(final MovingPiece piece, final int renderProgress) {
+        return GRID_WIDTH * piece.getOldPosition().getX() + GRID_WIDTH * renderProgress * piece.getDirection().getDeltaX() / FRAMES_PER_TICK;
     }
 
-    private static int calcDrawY(final Piece piece, final int renderProgress) {
-        return GRID_WIDTH * piece.getPosition().getY() + GRID_WIDTH * renderProgress * piece.getDirection().getDeltaY() / FRAMES_PER_TICK;
+    private static int calcDrawY(final MovingPiece piece, final int renderProgress) {
+        return GRID_WIDTH * piece.getOldPosition().getY() + GRID_WIDTH * renderProgress * piece.getDirection().getDeltaY() / FRAMES_PER_TICK;
     }
 }
