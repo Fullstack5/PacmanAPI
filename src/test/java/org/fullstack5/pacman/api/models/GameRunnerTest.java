@@ -170,4 +170,41 @@ public class GameRunnerTest {
 
         assertEquals("Should roll over", 19, result);
     }
+
+    @Test
+    public void collidedNoCollision() {
+        GameRunner runner = runnerWithEmptyMaze(20, 20);
+        Piece pacman = new Piece(Piece.Type.PACMAN, new Position(1, 1));
+        pacman.setPreviousPosition(new Position(2, 1));
+        Piece ghost = new Piece(Piece.Type.BLINKY, new Position(2, 1));
+        ghost.setPreviousPosition(new Position(3, 1));
+
+        boolean result = runner.collided(pacman, ghost);
+
+        assertEquals("These pieces should not be collided", false, result);
+    }
+
+    @Test
+    public void collidedCollision() {
+        GameRunner runner = runnerWithEmptyMaze(20, 20);
+        Piece pacman = new Piece(Piece.Type.PACMAN, new Position(1, 1));
+        Piece ghost = new Piece(Piece.Type.BLINKY, new Position(1, 1));
+
+        boolean result = runner.collided(pacman, ghost);
+
+        assertEquals("These pieces should be collided", true, result);
+    }
+
+    @Test
+    public void collidedCrossedCollision() {
+        GameRunner runner = runnerWithEmptyMaze(20, 20);
+        Piece pacman = new Piece(Piece.Type.PACMAN, new Position(1, 0));
+        pacman.setPreviousPosition(new Position(2, 0));
+        Piece ghost = new Piece(Piece.Type.BLINKY, new Position(2, 0));
+        ghost.setPreviousPosition(new Position(1, 0));
+
+        boolean result = runner.collided(pacman, ghost);
+
+        assertEquals("These pieces should be collided", true, result);
+    }
 }

@@ -48,6 +48,23 @@ public final class GameRunner {
         return createState();
     }
 
+
+    public final boolean collided(Piece pacman, Piece ghost) {
+        // ended up on the same position
+        if (pacman.getPosition().equals(ghost.getPosition())) {
+            return true;
+        }
+
+        // crossed position
+        if (pacman.getPosition().equals(ghost.getPreviousPosition()) &&
+                pacman.getPreviousPosition().equals(ghost.getPosition())) {
+            return true;
+        }
+
+        // no collision
+        return false;
+    }
+
     public final GameState createState() {
         return new GameState(
                 game.getTime(),
