@@ -29,9 +29,16 @@ public class GameRunnerTest {
         return new GameRunner(game);
     }
 
+    private GameRunner runnerWithWalls(boolean[][] walls) {
+        List<Position> noDots = Collections.emptyList();
+        List<Position> noPowerPellets = Collections.emptyList();
+        Maze maze = new Maze(walls, noDots, noPowerPellets, null, null, null, null, null);
+        Game game = new Game(maze);
+        return new GameRunner(game);
+    }
 
     @Test
-    public void newPositionNorth() {
+    public void determineNewPositionNorth() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
         Position newPosition = runner.determineNewPosition(position, Direction.NORTH);
@@ -44,7 +51,7 @@ public class GameRunnerTest {
     }
 
     @Test
-    public void newPositionSouth() {
+    public void determineNewPositionSouth() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
         Position newPosition = runner.determineNewPosition(position, Direction.SOUTH);
@@ -57,7 +64,7 @@ public class GameRunnerTest {
     }
 
     @Test
-    public void newPositionWest() {
+    public void determineNewPositionWest() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
         Position newPosition = runner.determineNewPosition(position, Direction.WEST);
@@ -70,7 +77,7 @@ public class GameRunnerTest {
     }
 
     @Test
-    public void newPositionEast() {
+    public void determineNewPositionEast() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 5);
         Position newPosition = runner.determineNewPosition(position, Direction.EAST);
@@ -83,7 +90,7 @@ public class GameRunnerTest {
     }
 
     @Test
-    public void newPositionLoopsY() {
+    public void determineNewPositionLoopsY() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(5, 19);
         Position newPosition = runner.determineNewPosition(position, Direction.SOUTH);
@@ -96,7 +103,7 @@ public class GameRunnerTest {
     }
 
     @Test
-    public void newPositionLoopsX() {
+    public void determineNewPositionLoopsX() {
         GameRunner runner = runnerWithEmptyMaze(20, 20);
         Position position = new Position(0, 5);
         Position newPosition = runner.determineNewPosition(position, Direction.WEST);
@@ -109,19 +116,34 @@ public class GameRunnerTest {
     }
 
     @Test
+    public void determineNewPositionWallCollision() {
+        boolean[][] walls = new boolean[][] {
+            {true, true, true},
+            {true, false, true},
+            {true, true, true}
+        };
+        GameRunner runner = runnerWithWalls(walls);
+        Position position = new Position(1, 1);
+        Position newPosition = runner.determineNewPosition(position, Direction.WEST);
+
+        assertEquals("The new position should be the same as the old position", position.getX(), newPosition.getX());
+        assertEquals("The new position should be the same as the old position", position.getY(), newPosition.getY());
+    }
+
+    @Test
     public void stepPacmanMoves() {
         Position pacmanSpawn = new Position(10, 10);
         GameRunner runner = runnerWithPacman(20, 20, pacmanSpawn);
         runner.performStep();
 
-        GameState state = runner.getState();
+        GameState state = runner.createState();
         assertEquals("Pacman should not have moved", pacmanSpawn, state.getPacman().getPosition());
         assertEquals("Time should have moved forward", 1, state.getTime());
 
         runner.setDirection(Direction.NORTH, Piece.Type.PACMAN);
         runner.performStep();
 
-        state = runner.getState();
+        state = runner.createState();
         assertNotEquals("Pacman should have moved", pacmanSpawn, state.getPacman());
         assertEquals("Pacman should have moved in the Y direction", 9, state.getPacman().getPosition().getY());
         assertEquals("Time should have moved forward", 2, state.getTime());
