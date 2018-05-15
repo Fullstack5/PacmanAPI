@@ -125,7 +125,7 @@ public final class PacmanGui {
         }
 
         private void renderGhost(final Graphics g, final Piece ghost, final Color color) {
-            g.setColor(color);
+            g.setColor(ghost.isVulnerable() ? Color.BLUE : color);
             final int drawX = calcDrawX(ghost, renderProgress);
             final int drawY = calcDrawY(ghost, renderProgress);
             g.fillArc(drawX, drawY, GRID_WIDTH - 1, (GRID_WIDTH ) - 1, 0, 180);
@@ -137,11 +137,13 @@ public final class PacmanGui {
             g.setColor(Color.WHITE);
             g.fillOval(drawX + GRID_WIDTH / 8, drawY + GRID_WIDTH / 8, GRID_WIDTH / 4, GRID_WIDTH / 4);
             g.fillOval(drawX + GRID_WIDTH * 5 / 8, drawY + GRID_WIDTH / 8, GRID_WIDTH / 4, GRID_WIDTH / 4);
-            g.setColor(Color.BLACK);
-            g.drawOval(drawX + GRID_WIDTH / 8, drawY + GRID_WIDTH / 8, GRID_WIDTH / 4, GRID_WIDTH / 4);
-            g.fillOval(drawX + GRID_WIDTH / 8 + (ghost.getDirection().getDeltaX() + 1) * GRID_WIDTH / 16, drawY + GRID_WIDTH / 8 + (ghost.getDirection().getDeltaY() + 1) * GRID_WIDTH / 16, GRID_WIDTH / 8, GRID_WIDTH / 8);
-            g.drawOval(drawX + GRID_WIDTH * 5 / 8, drawY + GRID_WIDTH / 8, GRID_WIDTH / 4, GRID_WIDTH / 4);
-            g.fillOval(drawX + GRID_WIDTH * 5 / 8 + (ghost.getDirection().getDeltaX() + 1) * GRID_WIDTH / 16, drawY + GRID_WIDTH / 8 + (ghost.getDirection().getDeltaY() + 1) * GRID_WIDTH / 16, GRID_WIDTH / 8, GRID_WIDTH / 8);
+            if (!ghost.isVulnerable()) {
+                g.setColor(Color.BLACK);
+                g.drawOval(drawX + GRID_WIDTH / 8, drawY + GRID_WIDTH / 8, GRID_WIDTH / 4, GRID_WIDTH / 4);
+                g.fillOval(drawX + GRID_WIDTH / 8 + (ghost.getDirection().getDeltaX() + 1) * GRID_WIDTH / 16, drawY + GRID_WIDTH / 8 + (ghost.getDirection().getDeltaY() + 1) * GRID_WIDTH / 16, GRID_WIDTH / 8, GRID_WIDTH / 8);
+                g.drawOval(drawX + GRID_WIDTH * 5 / 8, drawY + GRID_WIDTH / 8, GRID_WIDTH / 4, GRID_WIDTH / 4);
+                g.fillOval(drawX + GRID_WIDTH * 5 / 8 + (ghost.getDirection().getDeltaX() + 1) * GRID_WIDTH / 16, drawY + GRID_WIDTH / 8 + (ghost.getDirection().getDeltaY() + 1) * GRID_WIDTH / 16, GRID_WIDTH / 8, GRID_WIDTH / 8);
+            }
         }
 
         private void renderMaze(final Graphics g) {
