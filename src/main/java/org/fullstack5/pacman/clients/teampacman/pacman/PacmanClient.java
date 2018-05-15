@@ -1,4 +1,4 @@
-package org.fullstack5.pacman.clients.pacman.pacman;
+package org.fullstack5.pacman.clients.teampacman.pacman;
 
 public class PacmanClient {
 
