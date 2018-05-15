@@ -1,6 +1,5 @@
 package org.fullstack5.pacmanapi;
 
-import org.fullstack5.pacmanapi.models.Direction;
 import org.fullstack5.pacmanapi.models.Maze;
 import org.fullstack5.pacmanapi.models.Piece;
 import org.fullstack5.pacmanapi.models.Position;
@@ -12,9 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Polygon;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.List;
 
 /**
