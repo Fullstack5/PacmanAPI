@@ -88,12 +88,12 @@ public final class PacmanGui {
             renderMaze(g);
             if (state != null) {
                 renderPacman(g);
+                renderDots(g, state.getRemainingDots(), 8);
+                renderDots(g, state.getRemainingPellets(), 2);
                 renderGhost(g, state.getBlinky(), Color.RED);
                 renderGhost(g, state.getPinky(), Color.PINK);
                 renderGhost(g, state.getInky(), Color.CYAN);
                 renderGhost(g, state.getClyde(), Color.ORANGE);
-                renderDots(g, state.getRemainingDots(), 8);
-                renderDots(g, state.getRemainingPellets(), 2);
             }
         }
 
