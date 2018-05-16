@@ -1,9 +1,8 @@
 package org.fullstack5.pacman.api;
 
-import org.fullstack5.pacman.api.models.Piece;
-import org.fullstack5.pacman.api.models.response.GameState;
 import org.fullstack5.pacman.api.models.Maze;
 import org.fullstack5.pacman.api.models.Position;
+import org.fullstack5.pacman.api.models.response.GameState;
 import org.fullstack5.pacman.api.models.response.MovingPiece;
 import reactor.core.publisher.Flux;
 
@@ -12,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 /**
@@ -51,11 +52,26 @@ public final class PacmanGui {
         frame.pack();
         frame.setSize(maze.getWidth() * GRID_WIDTH + 16, maze.getHeight() * GRID_WIDTH + 38);
         frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setTitle("Chapter Fullstack 5 Pacman Simulator | PIN: " + gameId);
         frame.setVisible(true);
+        frame.addWindowListener(new PacmanWindowListener(frame));
 
         new Thread(new GuiRunner(frame)).start();
+    }
+
+    private class PacmanWindowListener extends WindowAdapter {
+
+        private final JFrame frame;
+
+        public PacmanWindowListener(final JFrame frame) {
+            this.frame = frame;
+        }
+
+        @Override
+        public void windowClosed(final WindowEvent e) {
+            frame.dispose();
+            // TODO: Stop game on window close.
+        }
     }
 
     private class GuiRunner implements Runnable {
@@ -70,7 +86,6 @@ public final class PacmanGui {
         public void run() {
             while (true) {
                 renderProgress++;
-//                System.out.println("Repaint");
                 frame.repaint();
                 try {
                     Thread.sleep(MS_PER_FRAME);
