@@ -34,7 +34,6 @@ public final class GameRunner {
     }
 
     final void start(final String gameId) {
-        flux.connect();
         new PacmanGui(gameId, game.getMaze()).initialize(flux);
     }
 
@@ -47,6 +46,11 @@ public final class GameRunner {
             throw new IllegalArgumentException("Player was already registered");
         }
         players.put(type, authId);
+
+        // start the flux publisher if both pacman and ghosts player are connected
+        if(players.containsKey(PlayerType.PACMAN) && players.containsKey(PlayerType.GHOSTS)) {
+            flux.connect();
+        }
     }
 
     public final GameState performStep() {
