@@ -65,10 +65,16 @@ public final class GameRunner {
         if (game.getGhosts().stream()
                 .anyMatch(ghost -> collided(pacman, ghost))) {
             game.setState(State.PACMAN_LOST);
+            return createState();
         }
 
         // eat pacdots
         game.getRemainingPacdots().remove(pacman.getPosition());
+
+        // check if all dots are eaten
+        if (game.getRemainingPacdots().isEmpty()) {
+            game.setState(State.PACMAN_WON);
+        }
 
         return createState();
     }
