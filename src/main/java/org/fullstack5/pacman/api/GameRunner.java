@@ -27,6 +27,8 @@ public final class GameRunner {
         this.flux = Flux
                 .interval(Duration.ofSeconds(1))
                 .map(t -> this.performStep())
+                .takeUntil(state -> !state.getState().equals(State.IN_PROGRESS))
+                .log()
                 .publish();
         this.players = new HashMap();
     }
@@ -63,7 +65,6 @@ public final class GameRunner {
         if (game.getGhosts().stream()
                 .anyMatch(ghost -> collided(pacman, ghost))) {
             game.setState(State.PACMAN_LOST);
-            flux.connect().dispose();
         }
 
         // eat pacdots
