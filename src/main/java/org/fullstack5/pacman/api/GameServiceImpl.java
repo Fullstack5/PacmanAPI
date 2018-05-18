@@ -32,10 +32,12 @@ public class GameServiceImpl implements GameService {
     @Override
     public GameRegistered registerGame() {
         // generate a non-conflicting gameId for the new game
-        String gameId;
+        String newGameId;
         do {
-            gameId = PinCode.create();
-        } while (games.containsKey(gameId));
+            newGameId = PinCode.create();
+        } while (games.containsKey(newGameId));
+        // make it final for usage in lambda expressions
+        final String gameId = newGameId;
 
         final Maze maze;
         try {
@@ -47,7 +49,9 @@ public class GameServiceImpl implements GameService {
 
         final GameRunner runner = new GameRunner(game);
         games.put(gameId, runner);
+        Runnable removeGame = () -> games.remove(gameId);
         runner.start(gameId);
+        runner.getFlux().subscribe(null, null, removeGame);
 
         return new GameRegistered(gameId);
     }
