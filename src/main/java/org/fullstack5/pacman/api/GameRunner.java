@@ -126,7 +126,7 @@ public final class GameRunner {
     public final void setDirection(String authId, final Direction direction, final Piece.Type type) {
         boolean authIdValid = players.entrySet().stream()
                 .filter(entry -> entry.getKey().controls(type))
-                .allMatch(entry -> entry.getValue().equals(authId));
+                .anyMatch(entry -> entry.getValue().equals(authId));
 
         if (!authIdValid) {
             throw new IllegalArgumentException("authId is not correct");
