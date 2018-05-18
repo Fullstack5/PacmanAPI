@@ -10,7 +10,24 @@ import lombok.Setter;
 @Setter
 public final class Piece {
     public enum Type {
-        PACMAN, BLINKY, PINKY, INKY, CLYDE
+        PACMAN(Archetype.PACMAN),
+        BLINKY(Archetype.GHOST),
+        PINKY(Archetype.GHOST),
+        INKY(Archetype.GHOST),
+        CLYDE(Archetype.GHOST);
+
+        private Archetype archetype;
+        Type(Archetype archetype) {
+            this.archetype = archetype;
+        }
+
+        public Archetype getArchetype() {
+            return archetype;
+        }
+    }
+
+    public enum Archetype {
+        PACMAN, GHOST
     }
 
     private final Type type;
