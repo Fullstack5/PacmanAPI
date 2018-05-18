@@ -54,10 +54,6 @@ public final class GameRunner {
     }
 
     public final GameState performStep() {
-        // update time
-        long time = game.getTime();
-        game.setTime(time + 1);
-
         // update all pieces
         game.getPieces().stream()
                 .filter(piece -> piece.isActive())
@@ -67,10 +63,13 @@ public final class GameRunner {
                         )
         );
 
-        // update disabled ticks for all disabled pieces
-        game.getPieces().stream()
-                .filter(piece -> !piece.isActive())
-                .forEach(piece -> piece.reduceTicksDisabled());
+        // update timers
+        updateTimers();
+
+        // if vulnerability ended make all ghosts deadly again
+        if (game.getTicksVulnerable() <= 0) {
+            game.getGhosts().forEach(ghost -> ghost.setVulnerable(false));
+        }
 
         Piece pacman = game.getPacman();
 
@@ -80,6 +79,7 @@ public final class GameRunner {
                 if (ghost.isVulnerable()) {
                     ghost.setPosition(getSpawnPosition(ghost));
                     ghost.setTicksDisabled(5);
+                    ghost.setVulnerable(false);
                 } else {
                     game.setState(State.PACMAN_LOST);
                     return createState();
@@ -90,9 +90,18 @@ public final class GameRunner {
         // eat pacdots
         game.getRemainingPacdots().remove(pacman.getPosition());
 
-        // check if all dots are eaten
-        if (game.getRemainingPacdots().isEmpty()) {
+        // eat power pellets
+        if (game.getRemainingPellets().remove(pacman.getPosition())) {
+            game.setTicksVulnerable(100);
+            game.getGhosts().forEach(ghost -> ghost.setVulnerable(true));
+        }
+
+        // check if all dots & pellets are eaten
+        boolean allDotsEaten = game.getRemainingPacdots().isEmpty();
+        boolean allPelletsEaten = game.getRemainingPellets().isEmpty();
+        if (allDotsEaten && allPelletsEaten) {
             game.setState(State.PACMAN_WON);
+            return createState();
         }
 
         return createState();
@@ -148,6 +157,12 @@ public final class GameRunner {
         }
 
         getPiece(type).setDirection(direction);
+    }
+
+    private void updateTimers() {
+        game.setTime(game.getTime() + 1);
+        game.getPieces().forEach(piece -> piece.reduceTicksDisabled());
+        game.reduceTicksVulnerable();
     }
 
     private Piece getPiece(final Piece.Type type) {

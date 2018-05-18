@@ -16,6 +16,7 @@ public final class Game {
 
     private final Maze maze;
     private long time;
+    private int ticksVulnerable;
     private State state;
     private final List<Position> remainingPacdots = new ArrayList<>();
     private final List<Position> remainingPellets = new ArrayList<>();
@@ -59,5 +60,11 @@ public final class Game {
 
         this.pieces = Collections.unmodifiableList(pieces);
         this.ghosts = Collections.unmodifiableList(ghosts);
+    }
+
+    public void reduceTicksVulnerable() {
+        if (ticksVulnerable > 0) {
+            ticksVulnerable -= 1;
+        }
     }
 }
