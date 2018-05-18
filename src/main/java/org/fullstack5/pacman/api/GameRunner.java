@@ -103,7 +103,7 @@ public final class GameRunner {
     public final GameState createState() {
         return new GameState(
                 game.getTime(),
-                State.IN_PROGRESS,
+                game.getState(),
                 game.getRemainingPacdots(),
                 game.getRemainingPellets(),
                 createMovingPiece(game.getPacman()),
