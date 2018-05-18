@@ -92,7 +92,7 @@ public final class GameRunner {
 
         // eat power pellets
         if (game.getRemainingPellets().remove(pacman.getPosition())) {
-            game.setTicksVulnerable(100);
+            game.setTicksVulnerable(20);
             game.getGhosts().forEach(ghost -> ghost.setVulnerable(true));
         }
 
