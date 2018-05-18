@@ -38,7 +38,6 @@ public final class Piece {
     private Direction direction;
     private boolean isVulnerable;
 
-    @Setter(AccessLevel.NONE)
     @Getter(AccessLevel.NONE)
     private int ticksDisabled;
 

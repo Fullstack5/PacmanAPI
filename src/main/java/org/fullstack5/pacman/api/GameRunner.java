@@ -75,10 +75,16 @@ public final class GameRunner {
         Piece pacman = game.getPacman();
 
         // detect ghost collisions
-        if (game.getGhosts().stream()
-                .anyMatch(ghost -> collided(pacman, ghost))) {
-            game.setState(State.PACMAN_LOST);
-            return createState();
+        for (Piece ghost : game.getGhosts()) {
+            if (collided(pacman, ghost)) {
+                if (ghost.isVulnerable()) {
+                    ghost.setPosition(getSpawnPosition(ghost));
+                    ghost.setTicksDisabled(5);
+                } else {
+                    game.setState(State.PACMAN_LOST);
+                    return createState();
+                }
+            }
         }
 
         // eat pacdots
@@ -91,7 +97,6 @@ public final class GameRunner {
 
         return createState();
     }
-
 
     public final boolean collided(Piece pacman, Piece ghost) {
         // ended up on the same position
@@ -159,6 +164,23 @@ public final class GameRunner {
                 return game.getClyde();
             default:
                 throw new RuntimeException("getPiece called with a type that does not exist: " + type);
+        }
+    }
+
+    private Position getSpawnPosition(Piece piece) {
+        switch (piece.getType()) {
+            case PACMAN:
+                return game.getMaze().getPacmanSpawn();
+            case BLINKY:
+                return game.getMaze().getBlinkySpawn();
+            case PINKY:
+                return game.getMaze().getPinkySpawn();
+            case INKY:
+                return game.getMaze().getInkySpawn();
+            case CLYDE:
+                return game.getMaze().getClydeSpawn();
+            default:
+                throw new RuntimeException("getSpawnPosition called with a type that does not exist: " + piece.getType());
         }
     }
 
