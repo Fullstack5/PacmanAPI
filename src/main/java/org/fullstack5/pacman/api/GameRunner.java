@@ -59,9 +59,18 @@ public final class GameRunner {
         game.setTime(time + 1);
 
         // update all pieces
-        game.getPieces().forEach(piece ->
-                piece.setPosition(determineNewPosition(piece.getPosition(), piece.getDirection()))
+        game.getPieces().stream()
+                .filter(piece -> piece.isActive())
+                .forEach(piece ->
+                        piece.setPosition(
+                                determineNewPosition(piece.getPosition(), piece.getDirection())
+                        )
         );
+
+        // update disabled ticks for all disabled pieces
+        game.getPieces().stream()
+                .filter(piece -> !piece.isActive())
+                .forEach(piece -> piece.reduceTicksDisabled());
 
         Piece pacman = game.getPacman();
 
@@ -119,7 +128,8 @@ public final class GameRunner {
                 piece.getPreviousPosition(),
                 piece.getPosition(),
                 piece.getDirection(),
-                piece.isVulnerable()
+                piece.isVulnerable(),
+                piece.isActive()
         );
     }
 

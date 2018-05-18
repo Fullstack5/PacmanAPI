@@ -45,15 +45,15 @@ public final class Game {
         pieces.add(blinky);
         ghosts.add(blinky);
 
-        pinky = new Piece(Piece.Type.PINKY, maze.getPinkySpawn());
+        pinky = new Piece(Piece.Type.PINKY, maze.getPinkySpawn(), 5);
         pieces.add(pinky);
         ghosts.add(pinky);
 
-        inky = new Piece(Piece.Type.INKY, maze.getInkySpawn());
+        inky = new Piece(Piece.Type.INKY, maze.getInkySpawn(), 25);
         pieces.add(inky);
         ghosts.add(inky);
 
-        clyde = new Piece(Piece.Type.CLYDE, maze.getClydeSpawn());
+        clyde = new Piece(Piece.Type.CLYDE, maze.getClydeSpawn(), 45);
         pieces.add(clyde);
         ghosts.add(clyde);
 

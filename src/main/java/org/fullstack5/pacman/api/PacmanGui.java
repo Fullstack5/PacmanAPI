@@ -6,11 +6,8 @@ import org.fullstack5.pacman.api.models.response.GameState;
 import org.fullstack5.pacman.api.models.response.MovingPiece;
 import reactor.core.publisher.Flux;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
-import java.awt.Color;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
@@ -177,15 +174,15 @@ public final class PacmanGui {
     }
 
     private static int calcDrawX(final MovingPiece piece, final int renderProgress) {
-        if (piece.getOldPosition().equals(piece.getCurrentPosition())) {
-            return GRID_WIDTH * piece.getOldPosition().getX();
+        if (piece.getOldPosition() == null || piece.getOldPosition().equals(piece.getCurrentPosition()) ) {
+            return GRID_WIDTH * piece.getCurrentPosition().getX();
         }
         return GRID_WIDTH * piece.getOldPosition().getX() + GRID_WIDTH * renderProgress * piece.getDirection().getDeltaX() / FRAMES_PER_TICK;
     }
 
     private static int calcDrawY(final MovingPiece piece, final int renderProgress) {
-        if (piece.getOldPosition().equals(piece.getCurrentPosition())) {
-            return GRID_WIDTH * piece.getOldPosition().getY();
+        if (piece.getOldPosition() == null || piece.getOldPosition().equals(piece.getCurrentPosition())) {
+            return GRID_WIDTH * piece.getCurrentPosition().getY();
         }
         return GRID_WIDTH * piece.getOldPosition().getY() + GRID_WIDTH * renderProgress * piece.getDirection().getDeltaY() / FRAMES_PER_TICK;
     }
