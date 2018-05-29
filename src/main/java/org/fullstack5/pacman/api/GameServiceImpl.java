@@ -51,7 +51,7 @@ public class GameServiceImpl implements GameService {
         final GameRunner runner = new GameRunner(game, step);
         games.put(gameId, runner);
         Runnable removeGame = () -> games.remove(gameId);
-        runner.start(gameId);
+        runner.start(gameId, step);
         runner.getFlux().subscribe(null, null, removeGame);
 
         return new GameRegistered(gameId);

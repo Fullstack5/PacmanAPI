@@ -6,10 +6,13 @@ import org.fullstack5.pacman.api.models.response.GameState;
 import org.fullstack5.pacman.api.models.response.MovingPiece;
 import reactor.core.publisher.Flux;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -18,27 +21,36 @@ import java.util.List;
 public final class PacmanGui {
 
     private static final int GRID_WIDTH = 40;
-    private static final int MS_PER_TICK = 1000;
     private static final int FRAMES_PER_TICK = 10;
-    private static final int MS_PER_FRAME = MS_PER_TICK / FRAMES_PER_TICK;
 
     private final String gameId;
     private final Maze maze;
 
     private GameState state;
 
+    private final long msPerTick;
+    private final long msPerFrame;
+
     private int renderProgress = 0;
 
-    public PacmanGui(final String gameId, final Maze maze) {
+    public PacmanGui(final String gameId, final Maze maze, final Duration step) {
         this.gameId = gameId;
         this.maze = maze;
+        msPerTick = step.getNano() / 1000000;
+        msPerFrame = msPerTick / FRAMES_PER_TICK;
     }
 
     public final void initialize(final Flux<GameState> flux) {
         flux.subscribe(state -> {
             this.state = state;
+            System.out.println("Received " + state);
             renderProgress = 0;
-//            System.out.println("Updated state");
+        },
+        state -> {
+            System.err.println("error");
+        },
+        () -> {
+            System.out.println("complete");
         });
 
         final JFrame frame = new JFrame();
@@ -85,7 +97,7 @@ public final class PacmanGui {
                 renderProgress++;
                 frame.repaint();
                 try {
-                    Thread.sleep(MS_PER_FRAME);
+                    Thread.sleep(msPerFrame);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
