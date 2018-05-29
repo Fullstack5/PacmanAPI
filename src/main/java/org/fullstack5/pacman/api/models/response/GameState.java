@@ -24,4 +24,9 @@ public final class GameState {
     private MovingPiece pinky;
     private MovingPiece inky;
     private MovingPiece clyde;
+
+    @Override
+    public final String toString() {
+        return String.format("State [time=%d] %s", time, state);
+    }
 }
