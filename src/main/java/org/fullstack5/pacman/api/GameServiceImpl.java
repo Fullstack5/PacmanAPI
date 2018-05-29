@@ -70,7 +70,11 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void performMove(String gameId, String authId, Direction direction, Piece.Type type) {
-        GameRunner runner = games.get(gameId);
+        final GameRunner runner = games.get(gameId);
+        if (runner == null ) {
+            System.err.println("Received order for gameId = " + gameId + ", but game has already ended!");
+            return;
+        }
         runner.setDirection(authId, direction, type);
     }
 }
