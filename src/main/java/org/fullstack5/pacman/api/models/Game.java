@@ -6,6 +6,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Representation of a game within the server.
@@ -17,7 +18,7 @@ public final class Game {
     private final Maze maze;
     private long time;
     private int ticksVulnerable;
-    private State state;
+    private Optional<Result> result;
     private final List<Position> remainingPacdots = new ArrayList<>();
     private final List<Position> remainingPellets = new ArrayList<>();
     private final List<Piece> pieces;
@@ -31,7 +32,7 @@ public final class Game {
     public Game(final Maze maze) {
         this.maze = maze;
 
-        this.state = State.IN_PROGRESS;
+        this.result = Optional.empty();
 
         remainingPacdots.addAll(maze.getDots());
         remainingPellets.addAll(maze.getPowerPellets());

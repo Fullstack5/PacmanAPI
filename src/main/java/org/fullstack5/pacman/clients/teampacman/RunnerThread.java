@@ -2,8 +2,6 @@ package org.fullstack5.pacman.clients.teampacman;
 
 import org.fullstack5.pacman.api.models.response.GameState;
 
-import static org.fullstack5.pacman.api.models.State.IN_PROGRESS;
-
 /**
  * Thread responsible for checking for a new state continuously, then executing the AI with that new state.
  *
@@ -30,7 +28,7 @@ public final class RunnerThread extends Thread {
         while (running) {
             long start = System.currentTimeMillis();
             if (gameState != null) {
-                if (gameState.getState() != IN_PROGRESS) {
+                if (gameState.getResult().isPresent()) {
                     running = false;
                 }
                 try {

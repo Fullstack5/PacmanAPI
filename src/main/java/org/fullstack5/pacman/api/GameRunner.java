@@ -10,6 +10,7 @@ import reactor.core.publisher.Flux;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A runner to execute the game rules and logic
@@ -27,7 +28,7 @@ public final class GameRunner {
         this.flux = Flux
                 .interval(step)
                 .map(t -> this.performStep())
-                .takeUntil(state -> !state.getState().equals(State.IN_PROGRESS))
+                .takeUntil(state -> state.getResult().isPresent())
                 .log()
                 .publish();
         this.players = new HashMap();
@@ -81,7 +82,7 @@ public final class GameRunner {
                     ghost.setTicksDisabled(5);
                     ghost.setVulnerable(false);
                 } else {
-                    game.setState(State.PACMAN_LOST);
+                    game.setResult(Optional.of(Result.PACMAN_LOST));
                     return createState();
                 }
             }
@@ -100,7 +101,7 @@ public final class GameRunner {
         boolean allDotsEaten = game.getRemainingPacdots().isEmpty();
         boolean allPelletsEaten = game.getRemainingPellets().isEmpty();
         if (allDotsEaten && allPelletsEaten) {
-            game.setState(State.PACMAN_WON);
+            game.setResult(Optional.of(Result.PACMAN_WON));
             return createState();
         }
 
@@ -126,7 +127,7 @@ public final class GameRunner {
     public final GameState createState() {
         return new GameState(
                 game.getTime(),
-                game.getState(),
+                game.getResult(),
                 game.getRemainingPacdots(),
                 game.getRemainingPellets(),
                 createMovingPiece(game.getPacman()),

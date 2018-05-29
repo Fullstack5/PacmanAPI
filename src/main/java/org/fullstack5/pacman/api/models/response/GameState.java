@@ -4,9 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.fullstack5.pacman.api.models.Position;
-import org.fullstack5.pacman.api.models.State;
+import org.fullstack5.pacman.api.models.Result;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Immutable instance of the game state in time.
@@ -16,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public final class GameState {
     private long time;
-    private State state;
+    private Optional<Result> result;
     private List<Position> remainingDots;
     private List<Position> remainingPellets;
     private MovingPiece pacman;
