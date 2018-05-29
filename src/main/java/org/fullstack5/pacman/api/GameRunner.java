@@ -23,7 +23,7 @@ public final class GameRunner {
     @Getter
     private final ConnectableFlux<GameState> flux;
 
-    public GameRunner(final Game game, Duration step) {
+    public GameRunner(final Game game, final Duration step) {
         this.game = game;
         this.flux = Flux
                 .interval(step)
@@ -34,8 +34,8 @@ public final class GameRunner {
         this.players = new HashMap();
     }
 
-    final void start(final String gameId) {
-        new PacmanGui(gameId, game.getMaze()).initialize(flux);
+    final void start(final String gameId, final Duration step) {
+        new PacmanGui(gameId, game.getMaze(), step).initialize(flux);
     }
 
     public Maze getMaze() {

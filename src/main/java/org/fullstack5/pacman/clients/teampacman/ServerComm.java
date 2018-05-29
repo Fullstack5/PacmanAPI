@@ -2,6 +2,7 @@ package org.fullstack5.pacman.clients.teampacman;
 
 import org.fullstack5.pacman.api.models.PlayerType;
 import org.fullstack5.pacman.api.models.request.MoveRequest;
+import org.fullstack5.pacman.api.models.request.RegisterGameRequest;
 import org.fullstack5.pacman.api.models.request.RegisterPlayerRequest;
 import org.fullstack5.pacman.api.models.request.StateRequest;
 import org.fullstack5.pacman.api.models.response.GameRegistered;
@@ -11,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+
+import java.time.Duration;
 
 /**
  * Static class taking care of communications from client to server.
@@ -45,8 +48,10 @@ public final class ServerComm {
      * @return the game id.
      */
     static String startGame() {
-        return WebClient.create(URL).get()
+        final RegisterGameRequest request = new RegisterGameRequest(Duration.ofMillis(100L));
+        return WebClient.create(URL).post()
                 .uri("/register-game")
+                .body(BodyInserters.fromObject(request))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(GameRegistered.class)
