@@ -28,6 +28,6 @@ public final class GameState {
 
     @Override
     public final String toString() {
-        return String.format("State [time=%d] %s", time, state);
+        return String.format("State [time=%d] %s", time, result);
     }
 }
