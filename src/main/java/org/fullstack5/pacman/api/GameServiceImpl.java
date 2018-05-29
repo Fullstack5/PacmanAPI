@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public GameRegistered registerGame() {
+    public GameRegistered registerGame(Duration step) {
         // generate a non-conflicting gameId for the new game
         String newGameId;
         do {
@@ -47,7 +48,7 @@ public class GameServiceImpl implements GameService {
         }
         Game game = new Game(maze);
 
-        final GameRunner runner = new GameRunner(game);
+        final GameRunner runner = new GameRunner(game, step);
         games.put(gameId, runner);
         Runnable removeGame = () -> games.remove(gameId);
         runner.start(gameId);

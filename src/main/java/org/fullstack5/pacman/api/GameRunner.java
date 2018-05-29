@@ -22,10 +22,10 @@ public final class GameRunner {
     @Getter
     private final ConnectableFlux<GameState> flux;
 
-    public GameRunner(final Game game) {
+    public GameRunner(final Game game, Duration step) {
         this.game = game;
         this.flux = Flux
-                .interval(Duration.ofSeconds(1))
+                .interval(step)
                 .map(t -> this.performStep())
                 .takeUntil(state -> !state.getState().equals(State.IN_PROGRESS))
                 .log()

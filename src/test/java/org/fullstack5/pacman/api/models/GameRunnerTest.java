@@ -5,6 +5,7 @@ import org.fullstack5.pacman.api.models.response.GameState;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class GameRunnerTest {
         }
         Maze maze = new Maze(noWalls, noDots, noPowerPellets, pacmanSpawn, blinkySpawn, root, root, root);
         Game game = new Game(maze);
-        return new GameRunner(game);
+        return new GameRunner(game, Duration.ofSeconds(1));
     }
 
     private GameRunner runnerWithWalls(boolean[][] walls) {
@@ -43,7 +44,7 @@ public class GameRunnerTest {
         Position root = new Position(0, 0);
         Maze maze = new Maze(walls, noDots, noPowerPellets, root, root, root, root, root);
         Game game = new Game(maze);
-        return new GameRunner(game);
+        return new GameRunner(game, Duration.ofSeconds(1));
     }
 
     @Test

@@ -1,6 +1,7 @@
 package org.fullstack5.pacman.api;
 
 import org.fullstack5.pacman.api.models.request.MoveRequest;
+import org.fullstack5.pacman.api.models.request.RegisterGameRequest;
 import org.fullstack5.pacman.api.models.request.RegisterPlayerRequest;
 import org.fullstack5.pacman.api.models.request.StateRequest;
 import org.fullstack5.pacman.api.models.response.GameRegistered;
@@ -25,8 +26,16 @@ public class PacmanApiController {
 
     @CrossOrigin
     @GetMapping(path = "/register-game")
-    public GameRegistered registerGame() {
-        return service.registerGame();
+    public GameRegistered registerDefaultGame() {
+        RegisterGameRequest request = new RegisterGameRequest();
+        return service.registerGame(request.getStepDuration());
+    }
+
+    @CrossOrigin
+    @PostMapping(path = "/register-game")
+    public GameRegistered registerGame(
+            @RequestBody RegisterGameRequest request) {
+        return service.registerGame(request.getStepDuration());
     }
 
     @CrossOrigin
