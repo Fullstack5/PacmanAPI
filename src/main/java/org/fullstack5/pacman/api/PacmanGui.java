@@ -32,6 +32,7 @@ public final class PacmanGui {
     private final long msPerFrame;
 
     private int renderProgress = 0;
+    private boolean stopped = false;
 
     public PacmanGui(final String gameId, final Maze maze, final Duration step) {
         this.gameId = gameId;
@@ -50,6 +51,7 @@ public final class PacmanGui {
             System.err.println("error");
         },
         () -> {
+            stopped = true;
             System.out.println("complete");
         });
 
@@ -95,6 +97,9 @@ public final class PacmanGui {
         public void run() {
             while (true) {
                 renderProgress++;
+                if (stopped && renderProgress >= msPerFrame) {
+                    break;
+                }
                 frame.repaint();
                 try {
                     Thread.sleep(msPerFrame);
