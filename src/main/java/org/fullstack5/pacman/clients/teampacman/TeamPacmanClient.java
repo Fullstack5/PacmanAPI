@@ -3,6 +3,7 @@ package org.fullstack5.pacman.clients.teampacman;
 import org.fullstack5.pacman.api.models.PlayerType;
 import org.fullstack5.pacman.api.models.response.GameState;
 import org.fullstack5.pacman.api.models.response.PlayerRegistered;
+import org.fullstack5.pacman.clients.teampacman.ghosts.AStarGhostAI;
 import org.fullstack5.pacman.clients.teampacman.ghosts.RandomGhostAI;
 import org.fullstack5.pacman.clients.teampacman.pacman.RandomPacmanAI;
 import reactor.core.publisher.Flux;
@@ -23,7 +24,7 @@ public final class TeamPacmanClient implements Runnable {
         flux.subscribe(pacmanThread::updateState);
 
         final PlayerRegistered ghostPlayer = ServerComm.registerPlayer(gameId, PlayerType.GHOSTS);
-        final RunnerThread ghostThread = new RunnerThread(new RandomGhostAI(gameId, ghostPlayer.getAuthId(), ghostPlayer.getMaze()));
+        final RunnerThread ghostThread = new RunnerThread(new AStarGhostAI(gameId, ghostPlayer.getAuthId(), ghostPlayer.getMaze()));
         flux.subscribe(ghostThread::updateState);
     }
 

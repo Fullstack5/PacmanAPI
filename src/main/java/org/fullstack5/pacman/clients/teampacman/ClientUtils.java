@@ -3,11 +3,15 @@ package org.fullstack5.pacman.clients.teampacman;
 import org.fullstack5.pacman.api.models.Direction;
 import org.fullstack5.pacman.api.models.Maze;
 import org.fullstack5.pacman.api.models.Piece;
+import org.fullstack5.pacman.api.models.Position;
 import org.fullstack5.pacman.api.models.response.GameState;
 import org.fullstack5.pacman.api.models.response.MovingPiece;
+import org.fullstack5.pacman.clients.teampacman.models.WeightedPosition;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * General utils available in the client.
@@ -87,4 +91,30 @@ public final class ClientUtils {
         }
     }
 
+    public static Position getPosition(final Maze maze, final Position current, final Direction direction) {
+        final int x = (current.getX() + direction.getDeltaX() + maze.getWidth()) % maze.getWidth();
+        final int y = (current.getY() + direction.getDeltaY() + maze.getHeight()) % maze.getHeight();
+        return new Position(x, y);
+    }
+
+    public static <T> List<T> randomize(final T[] values) {
+        return randomize(new ArrayList<T>(Arrays.asList(values)));
+    }
+
+    public static <T> List<T> randomize(final List<T> values) {
+        final List<T> result = new ArrayList<>();
+        while (!values.isEmpty()) {
+            final T item = randomItem(values);
+            result.add(item);
+            values.remove(item);
+        }
+        return result;
+    }
+
+    public static <T> void dumpSet(final TreeSet<T> set) {
+        System.out.println("Dump of set (" + set.size() + ")");
+        for (final T object : set) {
+            System.out.println(" " + object);
+        }
+    }
 }

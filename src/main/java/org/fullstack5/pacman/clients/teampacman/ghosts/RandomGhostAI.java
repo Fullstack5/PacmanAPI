@@ -35,7 +35,6 @@ public final class RandomGhostAI implements AI {
     }
 
     private void performMove(final int ghostNumber, final Direction direction) {
-        System.out.println("Performing move " + ghostNumber + " " + direction);
         final MoveRequest request = new MoveRequest(gameId, authId, direction, ClientUtils.getGhostType(ghostNumber));
         ServerComm.performMove(request);
     }

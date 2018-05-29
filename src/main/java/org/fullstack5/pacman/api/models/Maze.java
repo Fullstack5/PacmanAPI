@@ -33,4 +33,8 @@ public final class Maze {
     public final boolean isWall(final int x, final int y) {
         return walls[x][y];
     }
+
+    public final boolean isWall(final Position position) {
+        return isWall(position.getX(), position.getY());
+    }
 }

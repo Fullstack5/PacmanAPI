@@ -15,4 +15,9 @@ import lombok.NoArgsConstructor;
 public final class Position {
     private int x;
     private int y;
+
+    @Override
+    public final String toString() {
+        return String.format("[%d, %d]", x, y);
+    }
 }

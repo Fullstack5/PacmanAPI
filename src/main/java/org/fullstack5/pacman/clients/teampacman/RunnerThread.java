@@ -33,7 +33,13 @@ public final class RunnerThread extends Thread {
                 if (gameState.getState() != IN_PROGRESS) {
                     running = false;
                 }
-                ai.runAI(gameState);
+                try {
+                    ai.runAI(gameState);
+                } catch(RuntimeException e) {
+                    e.printStackTrace();
+                    System.exit(-1);
+                    throw e;
+                }
                 gameState = null;
                 System.out.println("Calculation took " + (System.currentTimeMillis() - start) + "ms");
             }
