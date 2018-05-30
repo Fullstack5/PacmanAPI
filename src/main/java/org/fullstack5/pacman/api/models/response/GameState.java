@@ -30,10 +30,17 @@ public final class GameState {
 
     @Override
     public final String toString() {
-        String stringRepresentation = String.format("State [time=%d] pacmanScore: %d", time, pacmanScore);
+        StringBuilder representation = new StringBuilder();
+        representation.append(String.format("State [time=%d] pacmanScore: %d", time, pacmanScore));
         if (result.isPresent()) {
-            stringRepresentation += String.format(" %s", result.get());
+            representation.append(String.format(" %s", result.get()));
         }
-        return stringRepresentation;
+        representation.append(String.format("\nPacman: %s", pacman));
+        representation.append(String.format("\nBlinky: %s", blinky));
+        representation.append(String.format("\nPinky: %s", pinky));
+        representation.append(String.format("\nInky: %s", inky));
+        representation.append(String.format("\nClyde: %s", clyde));
+
+        return representation.toString();
     }
 }
