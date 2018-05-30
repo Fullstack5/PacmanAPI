@@ -79,6 +79,7 @@ public final class GameRunner {
             if (collided(pacman, ghost)) {
                 if (ghost.isVulnerable()) {
                     ghost.setPosition(getSpawnPosition(ghost));
+                    ghost.setPreviousPosition(getSpawnPosition(ghost));
                     ghost.setTicksDisabled(5);
                     ghost.setVulnerable(false);
                 } else {

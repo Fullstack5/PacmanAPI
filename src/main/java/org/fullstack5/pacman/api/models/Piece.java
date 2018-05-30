@@ -32,7 +32,6 @@ public final class Piece {
     }
 
     private final Type type;
-    @Setter(AccessLevel.NONE)
     private Position previousPosition;
     private Position position;
     private Direction direction;
