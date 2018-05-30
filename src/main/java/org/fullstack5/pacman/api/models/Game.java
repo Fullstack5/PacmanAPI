@@ -68,4 +68,12 @@ public final class Game {
             ticksVulnerable -= 1;
         }
     }
+
+    public int getPacmanScore() {
+        return maze.getMaxScore() - getGhostsScore();
+    }
+
+    public int getGhostsScore() {
+        return remainingPacdots.size() + remainingPellets.size();
+    }
 }

@@ -25,9 +25,15 @@ public final class GameState {
     private MovingPiece pinky;
     private MovingPiece inky;
     private MovingPiece clyde;
+    private int pacmanScore;
+    private int ghostsScore;
 
     @Override
     public final String toString() {
-        return String.format("State [time=%d] %s\nPacman: %s\nBlinky: %s\nPinky: %s\nInky: %s\nClyde: %s", time, result, pacman, blinky, pinky, inky, clyde);
+        String stringRepresentation = String.format("State [time=%d] pacmanScore: %d", time, pacmanScore);
+        if (result.isPresent()) {
+            stringRepresentation += String.format(" %s", result.get());
+        }
+        return stringRepresentation;
     }
 }

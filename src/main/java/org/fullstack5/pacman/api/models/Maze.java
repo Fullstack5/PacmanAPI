@@ -37,4 +37,8 @@ public final class Maze {
     public final boolean isWall(final Position position) {
         return isWall(position.getX(), position.getY());
     }
+
+    public final int getMaxScore() {
+        return dots.size() + powerPellets.size();
+    }
 }

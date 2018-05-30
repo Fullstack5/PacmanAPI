@@ -135,7 +135,9 @@ public final class GameRunner {
                 createMovingPiece(game.getBlinky()),
                 createMovingPiece(game.getPinky()),
                 createMovingPiece(game.getInky()),
-                createMovingPiece(game.getClyde())
+                createMovingPiece(game.getClyde()),
+                game.getPacmanScore(),
+                game.getGhostsScore()
         );
     }
 
