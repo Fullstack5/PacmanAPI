@@ -28,6 +28,6 @@ public final class GameState {
 
     @Override
     public final String toString() {
-        return String.format("State [time=%d] %s", time, result);
+        return String.format("State [time=%d] %s\nPacman: %s\nBlinky: %s\nPinky: %s\nInky: %s\nClyde: %s", time, result, pacman, blinky, pinky, inky, clyde);
     }
 }

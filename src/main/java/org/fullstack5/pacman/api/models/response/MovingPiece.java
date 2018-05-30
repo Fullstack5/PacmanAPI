@@ -18,4 +18,9 @@ public final class MovingPiece {
     private Direction direction;
     private boolean vulnerable;
     private boolean active;
+
+    @Override
+    public String toString() {
+        return String.format("%s -> %s (%s) %s", oldPosition, currentPosition, direction, vulnerable ? !active ? "vulnerable & inactive" : "vulnerable" : !active ? "inactive" : "");
+    }
 }
