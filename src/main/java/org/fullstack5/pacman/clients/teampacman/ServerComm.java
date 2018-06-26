@@ -20,7 +20,13 @@ import java.time.Duration;
  */
 public final class ServerComm {
 
-    private static final String URL = "http://localhost:8080";
+    private static final String IP = "localhost";
+//    private static final String IP = "172.26.43.219"; // Ruben via Guest
+//    private static final String IP = "172.20.10.2"; // Jesse via Mauro
+
+    private static final String URL = "http://" + IP + ":8080";
+
+    private static final long GAME_SPEED = 1000L;
 
     private ServerComm() {}
 
@@ -48,8 +54,7 @@ public final class ServerComm {
      * @return the game id.
      */
     static String startGame() {
-        final RegisterGameRequest request = new RegisterGameRequest();
-        request.setStepDuration(Duration.ofMillis(100L));
+        final RegisterGameRequest request = new RegisterGameRequest(Duration.ofMillis(GAME_SPEED));
         return WebClient.create(URL).post()
                 .uri("/register-game")
                 .body(BodyInserters.fromObject(request))
