@@ -38,35 +38,36 @@ public final class TeamPacmanClient implements Runnable {
         }
         final Flux<GameState> flux = ServerComm.establishGameStateFlux(gameId);
 
-        PlayerRegistered player;
         RunnerThread thread;
         if (pacmanRunner != null) {
+            final PlayerRegistered player = ServerComm.registerPlayer(gameId, PlayerType.PACMAN);
+            final AI pacmanAI;
             switch (pacmanRunner) {
                 case RANDOM:
-                    player = ServerComm.registerPlayer(gameId, PlayerType.PACMAN);
-                    thread = new RunnerThread(new RandomPacmanAI(gameId, player.getAuthId(), player.getMaze()));
-                    flux.subscribe(thread::updateState);
+                    pacmanAI = new RandomPacmanAI(gameId, player.getAuthId(), player.getMaze());
                     break;
                 default:
-                    // do nothing
+                    throw new IllegalArgumentException("Unknown pacman runner");
             }
+            thread = new RunnerThread(pacmanAI);
+            flux.subscribe(thread::updateState);
         }
 
         if (ghostRunner != null) {
+            final PlayerRegistered player = ServerComm.registerPlayer(gameId, PlayerType.GHOSTS);
+            final AI ghostsAI;
             switch (ghostRunner) {
                 case RANDOM:
-                    player = ServerComm.registerPlayer(gameId, PlayerType.GHOSTS);
-                    thread = new RunnerThread(new RandomGhostAI(gameId, player.getAuthId(), player.getMaze()));
-                    flux.subscribe(thread::updateState);
+                    ghostsAI = new RandomGhostAI(gameId, player.getAuthId(), player.getMaze());
                     break;
                 case ASTAR:
-                    player = ServerComm.registerPlayer(gameId, PlayerType.GHOSTS);
-                    thread = new RunnerThread(new AStarGhostAI(gameId, player.getAuthId(), player.getMaze()));
-                    flux.subscribe(thread::updateState);
+                    ghostsAI = new AStarGhostAI(gameId, player.getAuthId(), player.getMaze());
                     break;
                 default:
-                    // do nothing
+                    throw new IllegalArgumentException("Unknown ghosts runner");
             }
+            thread = new RunnerThread(ghostsAI);
+            flux.subscribe(thread::updateState);
         }
     }
 
