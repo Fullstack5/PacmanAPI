@@ -4,6 +4,7 @@ import org.fullstack5.pacman.api.models.*;
 import org.fullstack5.pacman.api.models.response.GameRegistered;
 import org.fullstack5.pacman.api.models.response.GameState;
 import org.fullstack5.pacman.api.models.response.PlayerRegistered;
+import org.fullstack5.pacman.clients.teampacman.TeamPacmanClient;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -56,6 +57,14 @@ public class GameServiceImpl implements GameService {
         Runnable removeGame = () -> games.remove(gameId);
         runner.start(gameId, step);
         runner.getFlux().subscribe(null, null, removeGame);
+
+        if (pacmanRunner != null) {
+            new Thread(new TeamPacmanClient(gameId, pacmanRunner)).start();
+        }
+
+        if (ghostRunner != null) {
+            new Thread(new TeamPacmanClient(gameId, ghostRunner)).start();
+        }
 
         return new GameRegistered(gameId);
     }

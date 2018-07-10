@@ -40,29 +40,33 @@ public final class TeamPacmanClient implements Runnable {
 
         PlayerRegistered player;
         RunnerThread thread;
-        switch (pacmanRunner) {
-            case RANDOM:
-                player = ServerComm.registerPlayer(gameId, PlayerType.PACMAN);
-                thread = new RunnerThread(new RandomPacmanAI(gameId, player.getAuthId(), player.getMaze()));
-                flux.subscribe(thread::updateState);
-                break;
-            default:
-                // do nothing
+        if (pacmanRunner != null) {
+            switch (pacmanRunner) {
+                case RANDOM:
+                    player = ServerComm.registerPlayer(gameId, PlayerType.PACMAN);
+                    thread = new RunnerThread(new RandomPacmanAI(gameId, player.getAuthId(), player.getMaze()));
+                    flux.subscribe(thread::updateState);
+                    break;
+                default:
+                    // do nothing
+            }
         }
 
-        switch (ghostRunner) {
-            case RANDOM:
-                player = ServerComm.registerPlayer(gameId, PlayerType.GHOSTS);
-                thread = new RunnerThread(new RandomGhostAI(gameId, player.getAuthId(), player.getMaze()));
-                flux.subscribe(thread::updateState);
-                break;
-            case ASTAR:
-                player = ServerComm.registerPlayer(gameId, PlayerType.GHOSTS);
-                thread = new RunnerThread(new AStarGhostAI(gameId, player.getAuthId(), player.getMaze()));
-                flux.subscribe(thread::updateState);
-                break;
-            default:
-                // do nothing
+        if (ghostRunner != null) {
+            switch (ghostRunner) {
+                case RANDOM:
+                    player = ServerComm.registerPlayer(gameId, PlayerType.GHOSTS);
+                    thread = new RunnerThread(new RandomGhostAI(gameId, player.getAuthId(), player.getMaze()));
+                    flux.subscribe(thread::updateState);
+                    break;
+                case ASTAR:
+                    player = ServerComm.registerPlayer(gameId, PlayerType.GHOSTS);
+                    thread = new RunnerThread(new AStarGhostAI(gameId, player.getAuthId(), player.getMaze()));
+                    flux.subscribe(thread::updateState);
+                    break;
+                default:
+                    // do nothing
+            }
         }
     }
 
