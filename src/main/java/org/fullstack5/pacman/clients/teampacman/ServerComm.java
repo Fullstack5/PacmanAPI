@@ -48,7 +48,8 @@ public final class ServerComm {
      * @return the game id.
      */
     static String startGame() {
-        final RegisterGameRequest request = new RegisterGameRequest(Duration.ofMillis(100L));
+        final RegisterGameRequest request = new RegisterGameRequest();
+        request.setStepDuration(Duration.ofMillis(100L));
         return WebClient.create(URL).post()
                 .uri("/register-game")
                 .body(BodyInserters.fromObject(request))
