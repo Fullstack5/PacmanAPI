@@ -28,14 +28,20 @@ public class PacmanApiController {
     @GetMapping(path = "/register-game")
     public GameRegistered registerDefaultGame() {
         RegisterGameRequest request = new RegisterGameRequest();
-        return service.registerGame(request.getStepDuration());
+        return service.registerGame(
+                request.getStepDuration(),
+                request.getPacmanRunner(),
+                request.getGhostRunner());
     }
 
     @CrossOrigin
     @PostMapping(path = "/register-game")
     public GameRegistered registerGame(
             @RequestBody RegisterGameRequest request) {
-        return service.registerGame(request.getStepDuration());
+        return service.registerGame(
+                request.getStepDuration(),
+                request.getPacmanRunner(),
+                request.getGhostRunner());
     }
 
     @CrossOrigin

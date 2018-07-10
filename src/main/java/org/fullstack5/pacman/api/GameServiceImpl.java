@@ -31,7 +31,10 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public GameRegistered registerGame(Duration step) {
+    public GameRegistered registerGame(
+            Duration step,
+            PacmanRunner pacmanRunner,
+            GhostRunner ghostRunner) {
         // generate a non-conflicting gameId for the new game
         String newGameId;
         do {
