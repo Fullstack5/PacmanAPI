@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.fullstack5.pacman.api.models.GhostRunner;
+import org.fullstack5.pacman.api.models.GhostsRunner;
 import org.fullstack5.pacman.api.models.PacmanRunner;
 
 import java.time.Duration;
@@ -21,6 +21,6 @@ public class RegisterGameRequest {
     // or a string of the format "PT0.2S"
     private Duration stepDuration = Duration.ofSeconds(1);
 
-    private GhostRunner ghostRunner;
+    private GhostsRunner ghostsRunner;
     private PacmanRunner pacmanRunner;
 }

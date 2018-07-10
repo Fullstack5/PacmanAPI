@@ -10,7 +10,7 @@ import java.time.Duration;
 
 public interface GameService {
     Flux<GameState> getState(String gameId);
-    GameRegistered registerGame(Duration step, PacmanRunner pacmanRunner, GhostRunner ghostRunner);
+    GameRegistered registerGame(Duration step, PacmanRunner pacmanRunner, GhostsRunner ghostsRunner);
     PlayerRegistered registerPlayer(String gameId, PlayerType type);
     void performMove(String gameId, String authId, Direction direction, Piece.Type type);
 }

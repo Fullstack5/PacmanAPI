@@ -31,7 +31,7 @@ public class PacmanApiController {
         return service.registerGame(
                 request.getStepDuration(),
                 request.getPacmanRunner(),
-                request.getGhostRunner());
+                request.getGhostsRunner());
     }
 
     @CrossOrigin
@@ -41,7 +41,7 @@ public class PacmanApiController {
         return service.registerGame(
                 request.getStepDuration(),
                 request.getPacmanRunner(),
-                request.getGhostRunner());
+                request.getGhostsRunner());
     }
 
     @CrossOrigin

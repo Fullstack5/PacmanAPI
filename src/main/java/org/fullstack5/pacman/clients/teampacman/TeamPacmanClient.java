@@ -1,6 +1,6 @@
 package org.fullstack5.pacman.clients.teampacman;
 
-import org.fullstack5.pacman.api.models.GhostRunner;
+import org.fullstack5.pacman.api.models.GhostsRunner;
 import org.fullstack5.pacman.api.models.PacmanRunner;
 import org.fullstack5.pacman.api.models.PlayerType;
 import org.fullstack5.pacman.api.models.response.GameState;
@@ -13,22 +13,22 @@ import reactor.core.publisher.Flux;
 public final class TeamPacmanClient implements Runnable {
     private String gameId;
     private PacmanRunner pacmanRunner;
-    private GhostRunner ghostRunner;
+    private GhostsRunner ghostsRunner;
 
     public TeamPacmanClient(String gameId, PacmanRunner pacmanRunner) {
         this.gameId = gameId;
         this.pacmanRunner = pacmanRunner;
     }
 
-    public TeamPacmanClient(String gameId, GhostRunner ghostRunner) {
+    public TeamPacmanClient(String gameId, GhostsRunner ghostsRunner) {
         this.gameId = gameId;
-        this.ghostRunner = ghostRunner;
+        this.ghostsRunner = ghostsRunner;
     }
 
-    public TeamPacmanClient(String gameId, PacmanRunner pacmanRunner, GhostRunner ghostRunner) {
+    public TeamPacmanClient(String gameId, PacmanRunner pacmanRunner, GhostsRunner ghostsRunner) {
         this.gameId = gameId;
         this.pacmanRunner = pacmanRunner;
-        this.ghostRunner = ghostRunner;
+        this.ghostsRunner = ghostsRunner;
     }
 
     @Override
@@ -53,10 +53,10 @@ public final class TeamPacmanClient implements Runnable {
             flux.subscribe(thread::updateState);
         }
 
-        if (ghostRunner != null) {
+        if (ghostsRunner != null) {
             final PlayerRegistered player = ServerComm.registerPlayer(gameId, PlayerType.GHOSTS);
             final AI ghostsAI;
-            switch (ghostRunner) {
+            switch (ghostsRunner) {
                 case RANDOM:
                     ghostsAI = new RandomGhostAI(gameId, player.getAuthId(), player.getMaze());
                     break;
@@ -72,7 +72,7 @@ public final class TeamPacmanClient implements Runnable {
     }
 
     public static void main(final String...args) {
-        new TeamPacmanClient(null, PacmanRunner.RANDOM, GhostRunner.RANDOM).run();
+        new TeamPacmanClient(null, PacmanRunner.RANDOM, GhostsRunner.RANDOM).run();
     }
 
 }

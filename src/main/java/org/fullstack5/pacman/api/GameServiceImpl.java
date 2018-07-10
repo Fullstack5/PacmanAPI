@@ -35,7 +35,7 @@ public class GameServiceImpl implements GameService {
     public GameRegistered registerGame(
             Duration step,
             PacmanRunner pacmanRunner,
-            GhostRunner ghostRunner) {
+            GhostsRunner ghostsRunner) {
         // generate a non-conflicting gameId for the new game
         String newGameId;
         do {
@@ -62,8 +62,8 @@ public class GameServiceImpl implements GameService {
             new Thread(new TeamPacmanClient(gameId, pacmanRunner)).start();
         }
 
-        if (ghostRunner != null) {
-            new Thread(new TeamPacmanClient(gameId, ghostRunner)).start();
+        if (ghostsRunner != null) {
+            new Thread(new TeamPacmanClient(gameId, ghostsRunner)).start();
         }
 
         return new GameRegistered(gameId);
