@@ -29,9 +29,9 @@ Registers a new game with default parameters
 The response is the `GameRegistered` model containing the id of the game created.
 
 ##### Example
-```json
+```json5
 {
-  "gameId": "abcd"
+    "gameId": "abcd"
 }
 ```
 
@@ -47,11 +47,11 @@ A JSON object needs to be passed that indicates which options should be set on t
 
 
 ##### Example
-```json
+```json5
 {
-  "stepDuration": "PT0.5S",
-  "pacmanRunner": "RANDOM",
-  "ghostsRunner": "ASTAR"
+    "stepDuration": "PT0.5S",
+    "pacmanRunner": "RANDOM",
+    "ghostsRunner": "ASTAR"
 }
 ```
 
@@ -59,9 +59,9 @@ A JSON object needs to be passed that indicates which options should be set on t
 The response is the `GameRegistered` model containing the id of the game created.
 
 ##### Example
-```json
+```json5
 {
-  "gameId": "abcd"
+    "gameId": "abcd"
 }
 ```
 
@@ -75,10 +75,10 @@ A JSON object is expected that indicates for which game and for which player typ
 - `type` - provide the type of the player, options are `GHOSTS` or `PACMAN` (required)
 
 ##### Example
-```json
+```json5
 {
-  "gameId": "abcd",
-  "type": "GHOSTS"
+    "gameId": "abcd",
+    "type": "GHOSTS"
 }
 ```
 
@@ -86,11 +86,11 @@ A JSON object is expected that indicates for which game and for which player typ
 The response is the `PlayerRegistered` model containing the `authId` needed to make moves and the maze specifications.
 
 ##### Example
-```json
+```json5
 {
     "authId": "loypjwlrcvlopsnirieejxgcpjthqkncxmalsgefvjrbkliibkqxabnrugpphwrm",
     "maze": {
-        "walls": [
+        "walls": [ // there will be more wall columns forming a 2D grid of booleans
             [
                 true,
                 true,
@@ -112,46 +112,14 @@ The response is the `PlayerRegistered` model containing the `authId` needed to m
                 true,
                 true,
                 true,
-                true
-            ],
-            [
-                true,
-                false,
-                false,
-                false,
-                false,
-                false,
-                true,
-                false,
-                true,
-                false,
-                true,
-                false,
-                true,
-                false,
-                false,
-                false,
-                true,
-                false,
-                false,
-                false,
                 true
             ]
-            // more wall blocks
         ],
-        "dots": [
-            {
-                "x": 1,
-                "y": 1
-            },
-            {
-                "x": 1,
-                "y": 3
-            }
-            // more dots
-        ],
-        "powerPellets": [
-            {
+        "dots": [{ // there will be more dots
+            "x": 1,
+            "y": 1
+        }],
+        "powerPellets": [{
                 "x": 1,
                 "y": 2
             },
@@ -204,7 +172,7 @@ A JSON object needs to be passed that provides the gameId for which the status u
 - `gameId` - provide the `gameId` as replied from the `/register-game` endpoint (required)
 
 ##### Example
-```json
+```json5
 {
   "gameId": "abcd"
 }
@@ -214,89 +182,85 @@ A JSON object needs to be passed that provides the gameId for which the status u
 The response is a stream of the `GameState` model containing all the information of the current state of the game.
 
 ##### Example
-```json
+```json5
 {
-	"time": 3,
-	"result": null,
-	"remainingDots": [{
-		"x": 1,
-		"y": 1
-	}, {
-		"x": 1,
-		"y": 3
-	}],
-	// more dots
-	"remainingPellets": [{
-		"x": 1,
-		"y": 2
-	}, {
-		"x": 1,
-		"y": 15
-	}, {
-		"x": 17,
-		"y": 2
-	}, {
-		"x": 17,
-		"y": 15
-	}],
-	"pacman": {
-		"oldPosition": {
-			"x": 8,
-			"y": 15
-		},
-		"currentPosition": {
-			"x": 7,
-			"y": 15
-		},
-		"direction": "WEST",
-		"vulnerable": false,
-		"active": true
-	},
-	"blinky": {
-		"oldPosition": {
-			"x": 8,
-			"y": 7
-		},
-		"currentPosition": {
-			"x": 7,
-			"y": 7
-		},
-		"direction": "WEST",
-		"vulnerable": false,
-		"active": true
-	},
-	"pinky": {
-		"oldPosition": null,
-		"currentPosition": {
-			"x": 9,
-			"y": 9
-		},
-		"direction": "NORTH",
-		"vulnerable": false,
-		"active": false
-	},
-	"inky": {
-		"oldPosition": null,
-		"currentPosition": {
-			"x": 8,
-			"y": 9
-		},
-		"direction": "EAST",
-		"vulnerable": false,
-		"active": false
-	},
-	"clyde": {
-		"oldPosition": null,
-		"currentPosition": {
-			"x": 10,
-			"y": 9
-		},
-		"direction": "WEST",
-		"vulnerable": false,
-		"active": false
-	},
-	"pacmanScore": 2,
-	"ghostsScore": 148
+    "time": 3,
+    "result": null,
+    "remainingDots": [{ // there will be more dots
+        "x": 1,
+        "y": 1
+    }],
+    "remainingPellets": [{
+        "x": 1,
+        "y": 2
+    }, {
+        "x": 1,
+        "y": 15
+    }, {
+        "x": 17,
+        "y": 2
+    }, {
+        "x": 17,
+        "y": 15
+    }],
+    "pacman": {
+        "oldPosition": {
+            "x": 8,
+            "y": 15
+        },
+        "currentPosition": {
+            "x": 7,
+            "y": 15
+        },
+        "direction": "WEST",
+        "vulnerable": false,
+        "active": true
+    },
+    "blinky": {
+        "oldPosition": {
+            "x": 8,
+            "y": 7
+        },
+        "currentPosition": {
+            "x": 7,
+            "y": 7
+        },
+        "direction": "WEST",
+        "vulnerable": false,
+        "active": true
+    },
+    "pinky": {
+        "oldPosition": null,
+        "currentPosition": {
+            "x": 9,
+            "y": 9
+        },
+        "direction": "NORTH",
+        "vulnerable": false,
+        "active": false
+    },
+    "inky": {
+        "oldPosition": null,
+        "currentPosition": {
+            "x": 8,
+            "y": 9
+        },
+        "direction": "EAST",
+        "vulnerable": false,
+        "active": false
+    },
+    "clyde": {
+        "oldPosition": null,
+        "currentPosition": {
+            "x": 10,
+            "y": 9
+        },
+        "direction": "WEST",
+        "vulnerable": false,
+        "active": false
+    },
+    "pacmanScore": 2,
+    "ghostsScore": 148
 }
 ```
 
@@ -312,12 +276,12 @@ A JSON object needs to be passed that indicates which piece in which game needs 
 - `type` - provide the piece you want to move this can be `PACMAN`, `INKY`, `BLINKY`, `PINKY` or `CLYDE`, the authId will need to match the a player that can control the piece (required)
 
 ##### Example
-```json
+```json5
 {
-	"gameId": "abcd",
+    "gameId": "abcd",
     "authId": "loypjwlrcvlopsnirieejxgcpjthqkncxmalsgefvjrbkliibkqxabnrugpphwrm",
-	"direction": "WEST",
-	"type": "BLINKY"
+    "direction": "WEST",
+    "type": "BLINKY"
 }
 ```
 
