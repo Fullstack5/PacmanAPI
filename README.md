@@ -42,7 +42,7 @@ Registers a new game with optional parameters
 A JSON object needs to be passed that indicates which options should be set on the new game. All fields are optional.
 
 - `stepDuration` - set how fast the game runs in duration per step, provide a integer or float (in seconds) or a string of the format `"PT0.2S"` (Default is 1)
-- `ghostsRunner` - let the server play the ghosts, current options are `RANDOM` or `ASTAR` (Default is empty)
+- `ghostsRunner` - let the server play the ghosts, current options are `RANDOM` or `ASTAR` (Default is none)
 - `pacmanRunner` - let the server play pacman, current option is `RANDOM` (Default is none)
 
 
