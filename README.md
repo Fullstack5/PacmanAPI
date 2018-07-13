@@ -22,6 +22,12 @@ run main in PacmanApiApplication class
 
 ## Endpoints
 
+* [GET `/register-game`](#get-register-game)
+* [POST `/register-game`](#post-register-game)
+* [POST `/register-player`](#post-register-player)
+* [POST `/current-state`](#post-current-state)
+* [POST `/perform-move`](#post-perform-move)
+
 ### GET `/register-game`
 Registers a new game with default parameters
 
