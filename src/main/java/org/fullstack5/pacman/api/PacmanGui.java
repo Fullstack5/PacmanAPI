@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -123,7 +124,21 @@ public final class PacmanGui {
                 renderGhost(g, state.getPinky(), Color.PINK);
                 renderGhost(g, state.getInky(), Color.CYAN);
                 renderGhost(g, state.getClyde(), Color.ORANGE);
+            } else {
+                renderGameId(g);
             }
+        }
+
+        private void renderGameId(final Graphics g) {
+            final int width = 9;
+            final int left = (maze.getWidth() - width) / 2;
+            g.setColor(Color.BLUE);
+            g.fillRect(left * GRID_WIDTH, 2 * GRID_WIDTH, width * GRID_WIDTH - 1, 3 * GRID_WIDTH - 1);
+            g.setColor(Color.BLACK);
+            g.fillRect((int) ((left + .5) * GRID_WIDTH), (int) (2.5 * GRID_WIDTH), (width - 1) * GRID_WIDTH - 1, 2 * GRID_WIDTH - 1);
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Courier new", Font.BOLD, 36));
+            g.drawString("Game ID: " + gameId, (left + 1) * GRID_WIDTH, (int) (3.75 * GRID_WIDTH));
         }
 
         private void renderDots(final Graphics g, final List<Position> dots, final int size) { // size = 1/X of square
