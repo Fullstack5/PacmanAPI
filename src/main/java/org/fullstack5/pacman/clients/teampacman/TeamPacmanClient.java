@@ -7,6 +7,7 @@ import org.fullstack5.pacman.api.models.response.GameState;
 import org.fullstack5.pacman.api.models.response.PlayerRegistered;
 import org.fullstack5.pacman.clients.teampacman.ghosts.AStarGhostAI;
 import org.fullstack5.pacman.clients.teampacman.ghosts.RandomGhostAI;
+import org.fullstack5.pacman.clients.teampacman.ghosts.SurroundingAStarGhostAI;
 import org.fullstack5.pacman.clients.teampacman.pacman.RandomPacmanAI;
 import reactor.core.publisher.Flux;
 

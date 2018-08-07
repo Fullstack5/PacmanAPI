@@ -42,7 +42,7 @@ public final class AStarGhostAI implements AI {
         }
     }
 
-    private List<WeightedPosition> calculateAStarPath(final Maze maze, final MovingPiece origin, final MovingPiece target) {
+    static List<WeightedPosition> calculateAStarPath(final Maze maze, final MovingPiece origin, final MovingPiece target) {
         final TreeSet<WeightedPosition> options = new TreeSet<>();
         final Collection<WeightedPosition> neighbouring = findNeighbouring(maze, origin.getCurrentPosition(), target.getCurrentPosition(), null);
         options.addAll(neighbouring);
@@ -71,7 +71,7 @@ public final class AStarGhostAI implements AI {
     }
 
     // TODO: this can be more efficient.
-    private void addAllNonPresent(final Collection<WeightedPosition> target, final Collection<WeightedPosition> doneList, final Collection<WeightedPosition> newPoss) {
+    private static void addAllNonPresent(final Collection<WeightedPosition> target, final Collection<WeightedPosition> doneList, final Collection<WeightedPosition> newPoss) {
         for (final WeightedPosition newPos : newPoss) {
             boolean found = false;
             for (final WeightedPosition existing : target) {
@@ -96,7 +96,7 @@ public final class AStarGhostAI implements AI {
         }
     }
 
-    private Collection<WeightedPosition> findNeighbouring(final Maze maze, final Position current, final Position target, final WeightedPosition parent) {
+    private static Collection<WeightedPosition> findNeighbouring(final Maze maze, final Position current, final Position target, final WeightedPosition parent) {
         final List<WeightedPosition> result = new ArrayList<>(4);
         for (final Direction direction : ClientUtils.randomize(Direction.values())) {
             final Position newPos = ClientUtils.getPosition(maze, current, direction);
@@ -108,7 +108,7 @@ public final class AStarGhostAI implements AI {
         return result;
     }
 
-    private Collection<WeightedPosition> findNeighbouring(final Maze maze, final WeightedPosition current, final Position target, final WeightedPosition parent) {
+    private static Collection<WeightedPosition> findNeighbouring(final Maze maze, final WeightedPosition current, final Position target, final WeightedPosition parent) {
         final List<WeightedPosition> result = new ArrayList<>(4);
         for (final Direction direction : ClientUtils.randomize(Direction.values())) {
             final Position newPos = ClientUtils.getPosition(maze, current.getPosition(), direction);
@@ -120,7 +120,7 @@ public final class AStarGhostAI implements AI {
     }
 
 
-    private int estimateDistance(final Position from, final Position to) {
+    private static int estimateDistance(final Position from, final Position to) {
         return Math.abs(from.getX() - to.getX()) + Math.abs(from.getY() - to.getY());
     }
 
