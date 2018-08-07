@@ -44,11 +44,11 @@ public final class TeamPacmanClient implements Runnable {
             final PlayerRegistered player = ServerComm.registerPlayer(gameId, PlayerType.PACMAN);
             final AI pacmanAI;
             switch (pacmanRunner) {
-                case RANDOM:
-                    pacmanAI = new RandomPacmanAI(gameId, player.getAuthId(), player.getMaze());
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unknown pacman runner");
+            case RANDOM:
+                pacmanAI = new RandomPacmanAI(gameId, player.getAuthId(), player.getMaze());
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown pacman runner");
             }
             thread = new RunnerThread(pacmanAI);
             flux.subscribe(thread::updateState);
@@ -58,14 +58,17 @@ public final class TeamPacmanClient implements Runnable {
             final PlayerRegistered player = ServerComm.registerPlayer(gameId, PlayerType.GHOSTS);
             final AI ghostsAI;
             switch (ghostsRunner) {
-                case RANDOM:
-                    ghostsAI = new RandomGhostAI(gameId, player.getAuthId(), player.getMaze());
-                    break;
-                case ASTAR:
-                    ghostsAI = new AStarGhostAI(gameId, player.getAuthId(), player.getMaze());
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unknown ghosts runner");
+            case RANDOM:
+                ghostsAI = new RandomGhostAI(gameId, player.getAuthId(), player.getMaze());
+                break;
+            case ASTAR:
+                ghostsAI = new AStarGhostAI(gameId, player.getAuthId(), player.getMaze());
+                break;
+            case SURROUNDING_ASTAR:
+                ghostsAI = new SurroundingAStarGhostAI(gameId, player.getAuthId(), player.getMaze());
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown ghosts runner");
             }
             thread = new RunnerThread(ghostsAI);
             flux.subscribe(thread::updateState);
@@ -73,7 +76,7 @@ public final class TeamPacmanClient implements Runnable {
     }
 
     public static void main(final String...args) {
-        new TeamPacmanClient(null, PacmanRunner.RANDOM, GhostsRunner.RANDOM).run();
+        new TeamPacmanClient(null, null, GhostsRunner.SURROUNDING_ASTAR).run();
     }
 
 }
