@@ -26,7 +26,7 @@ public final class ServerComm {
 
     private static final String URL = "http://" + IP + ":8080";
 
-    private static final long GAME_SPEED = 1000L;
+    private static final long GAME_SPEED = 100L;
 
     private ServerComm() {}
 
@@ -54,7 +54,8 @@ public final class ServerComm {
      * @return the game id.
      */
     static String startGame() {
-        final RegisterGameRequest request = new RegisterGameRequest(Duration.ofMillis(GAME_SPEED));
+        final RegisterGameRequest request = new RegisterGameRequest();
+        request.setStepDuration(Duration.ofMillis(GAME_SPEED));
         return WebClient.create(URL).post()
                 .uri("/register-game")
                 .body(BodyInserters.fromObject(request))
